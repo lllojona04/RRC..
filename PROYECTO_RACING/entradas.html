@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta de Entradas - Real Racing Club</title>
+
+    <!-- === ICONO PARA NAVEGADOR (CORREGIDO) === -->
+    <link rel="icon" type="image/png" href="./img/entradas de futbol.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --racing-green: #006B3F;
+            --accent-yellow: #f3ca20;
+            --bg-dark-grey: #222222;
+            --bg-light-grey: #f0f0f0;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --bg-dark: #1a1a1a;
+            --bg-content-box: #252525;
+            --white: #ffffff;
+        }
+
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background-color: var(--bg-dark-grey); color: var(--text-light); }
+        * { box-sizing: border-box; }
+        ul { list-style: none; margin: 0; padding: 0; }
+        a { text-decoration: none; color: inherit; }
+
+        body.fade-out {
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+        }
+        
+        body.mobile-nav-open {
+            overflow: hidden;
+        }
+
+        .main-header {
+            position: fixed; top: 0; left: 0;
+            width: 100%; display: flex; justify-content: space-between;
+            align-items: center; padding: 15px 40px;
+            background-color:#006634;
+            border-bottom: 1px solid #444; z-index: 1000;
+            
+        }
+        .header-logo { width: 50px; height: 50px; }
+        .desktop-nav { display: none; }
+        .desktop-nav ul { display: flex; gap: 35px; }
+        .desktop-nav a {
+            color: var(--text-light); font-weight: 700; text-transform: uppercase;
+            font-size: 0.9rem; padding-bottom: 5px;
+            border-bottom: 3px solid transparent; transition: color 0.3s, border-color 0.3s;
+        }
+        .desktop-nav a:hover { color: var(--accent-yellow); border-bottom-color: var(--accent-yellow); }
+        
+        .hamburger-menu {
+            display: flex; flex-direction: column; gap: 5px;
+            cursor: pointer; background: none; border: none; padding: 0;
+        }
+        .hamburger-menu span {
+            display: block; width: 28px; height: 3px;
+            background-color: var(--white); border-radius: 2px;
+        }
+
+        .mobile-nav-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%;
+            max-width: 400px; height: 100%; 
+            background-color: var(--bg-dark);
+            z-index: 1001; transition: right 0.4s ease-in-out;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+        .mobile-nav-overlay.is-open { right: 0; }
+        
+        .mobile-nav-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; border-bottom: 1px solid var(--bg-content-box);
+        }
+        .mobile-nav-header .logo { height: 45px; width: auto; }
+        .close-menu {
+            font-size: 2.5rem; font-weight: 300; 
+            color: var(--white);
+            cursor: pointer; background: none; border: none; padding: 0; line-height: 1;
+        }
+        
+        .mobile-nav-links ul li { border-bottom: 1px solid var(--bg-content-box); }
+        .mobile-nav-links a {
+            display: block; padding: 20px; 
+            color: var(--white);
+            font-weight: 700; font-size: 1.1rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .mobile-nav-links a:hover {
+            color: var(--accent-yellow);
+            background-color: var(--bg-content-box);
+        }
+
+        #ticket-loader {
+            position: fixed; width: 100%; height: 100%; background-color: #ffffff;
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+        .loader-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .loading-logo { width: 150px; }
+        .loading-text { color: var(--racing-green); font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .progress-bar-container { width: 250px; height: 8px; background-color: #e0e0e0; border-radius: 4px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background-color: var(--racing-green); border-radius: 4px; transition: width 0.4s ease-out; }
+        #main-content { opacity: 0; display: none; transition: opacity 0.5s ease-in; }
+        .landing-page {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; min-height: 100vh;
+            padding: 100px 20px 40px 20px;
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://s2.sportstatics.com/relevo/www/multimedia/202405/19/media/cortadas/racing-santander-grada-RLcuKUgpNp33IYwYCUXR2YO-1200x648@Relevo.jpg');
+            background-size: cover; background-position: center; text-align: center;
+            gap: 40px;
+        }
+        .landing-header { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .landing-header .main-logo { width: 120px; }
+        .landing-header h1 { font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0px 4px 10px rgba(0,0,0,0.6); }
+        .landing-header .subtitle { color: var(--racing-green); font-size: 1.3rem; font-weight: 700; text-shadow: 0px 2px 5px rgba(0,0,0,0.5); }
+        
+        .landing-nav {
+            display: flex;
+            flex-direction: column; 
+            gap: 25px;
+            width: 100%;
+            align-items: center;
+        }
+        .nav-row {
+            display: flex;
+            justify-content: center;
+            gap: 25px; 
+            width: 100%;
+            flex-wrap: wrap; 
+        }
+        .nav-box {
+            background-color: rgba(0, 107, 63, 0.2); border: 2px solid var(--racing-green);
+            min-height: 120px;
+            padding: 20px 40px;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-box:hover { transform: translateY(-5px); background-color: var(--racing-green); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .box-title { font-size: 1.8rem; }
+        .box-subtitle {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: none;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .landing-footer { margin-top: auto; padding-top: 20px; }
+        .landing-footer p { font-size: 0.9rem; margin-bottom: 10px; }
+        .partner-logo { width: 150px; }
+        
+        @media (min-width: 992px) {
+            .desktop-nav { display: block; }
+            .hamburger-menu { display: none; }
+        }
+        @media (max-width: 768px) {
+            .main-header { padding: 15px 20px; }
+            .landing-header h1 { font-size: 2.2rem; }
+            .landing-header .subtitle { font-size: 1.1rem; }
+            .nav-row { flex-direction: column; align-items: center; gap: 20px; }
+            .nav-box { 
+                padding: 15px 30px; 
+                width: 80%; 
+                min-height: auto;
+            }
+            .box-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="./index.html" class="header-logo-link">
+            <img src="./img/logo.png" alt="Logo Real Racing Club" class="header-logo">
+        </a>
+        <!-- MENÚ DE NAVEGACIÓN SIN EL ENLACE A "TIENDA" -->
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="./index.html">Inicio</a></li>
+                <li><a href="./entradas.html">Entradas</a></li>
+                <li><a href="./plantilla.html">Plantilla 25/26</a></li>
+                <li><a href="./historia.html">Historia</a></li>
+                <li><a href="Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion 25-26</a></li>
+            </ul>
+        </nav>
+        <button class="hamburger-menu"><span></span><span></span><span></span></button>
+    </header>
+
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-header">
+            <img src="./img/logo.png" alt="Logo" class="logo">
+            <button class="close-menu">×</button>
+        </div>
+        <!-- MENÚ MÓVIL SIN EL ENLACE A "TIENDA" -->
+        <nav class="mobile-nav-links">
+            <ul>
+                <li><a href="./index.html">Inicio</a></li>
+                <li><a href="./entradas.html">Entradas</a></li>
+                <li><a href="./plantilla.html">Plantilla 25/26</a></li>
+                <li><a href="./historia.html">Historia</a></li>
+                <li><a href="Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion 25-26</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="ticket-loader">
+        <div class="loader-content">
+            <img src="./img/logo.png" alt="Cargando..." class="loading-logo">
+            <p class="loading-text">Cargando apartado de entradas</p>
+            <div class="progress-bar-container"><div class="progress-bar"></div></div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="landing-page">
+            <header class="landing-header">
+                <img src="img/logo.png" alt="Logo del Club" class="main-logo">
+                <h1>Real Racing Club</h1>
+                <p class="subtitle">Venta oficial de entradas</p>
+            </header>
+            
+            <!-- ============================================== -->
+            <!-- ===== ✅ SECCIÓN DE NAVEGACIÓN MODIFICADA ===== -->
+            <!-- ============================================== -->
+            <nav class="landing-nav">
+                <div class="nav-row">
+                    <a href="https://abonados.realracingclub.es/" target="_blank" rel="noopener noreferrer" class="nav-box">
+                        <span class="box-title">Portal de Abonado</span>
+                    </a>
+                    <a href="https://youtu.be/6CSMRM-iyDo?si=mHl_qXGk8oQuLadd" target="_blank" rel="noopener noreferrer" class="nav-box">
+                        <span class="box-title">video 360 campos</span>
+                    </a>
+                </div>
+                <div class="nav-row">
+                    <a href="https://bstadium.es/tours-originales/tour-interactivo-el-sardinero-racing-club-de-santander/" target="_blank" rel="noopener noreferrer" class="nav-box">
+                        <span class="box-title">Tour El Sardinero</span>
+                        <span class="box-subtitle">Experiencia Interactiva</span>
+                    </a>
+                    <!-- AQUÍ ESTÁ EL NUEVO BOTÓN PARA LA TIENDA -->
+                    <a href="https://tienda.realracingclub.es/" target="_blank" rel="noopener noreferrer" class="nav-box">
+                        <span class="box-title">Tienda Oficial</span>
+                        <span class="box-subtitle">Equipaciones y Merchandising</span>
+                    </a>
+                </div>
+            </nav>
+
+            <footer class="landing-footer">
+                <img src="https://www.compralaentrada.com/img/logos/logo-white.svg" alt="Compralaentrada" class="partner-logo">
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DE LA PANTALLA DE CARGA ---
+            const loader = document.getElementById('ticket-loader');
+            const mainContent = document.getElementById('main-content');
+            const progressBar = document.querySelector('.progress-bar');
+            
+            setTimeout(() => { if(progressBar) progressBar.style.width = '30%'; }, 200);
+            setTimeout(() => { if(progressBar) progressBar.style.width = '75%'; }, 700);
+            setTimeout(() => {
+                if(progressBar) progressBar.style.width = '100%';
+                setTimeout(() => {
+                    if(loader) loader.style.opacity = '0';
+                    if(mainContent) {
+                        mainContent.style.display = 'block';
+                        setTimeout(() => mainContent.style.opacity = '1', 50);
+                    }
+                    setTimeout(() => { if(loader) loader.style.display = 'none'; }, 500);
+                }, 300);
+            }, 1200);
+
+            // --- LÓGICA DEL MENÚ HAMBURGUESA ---
+            const hamburgerBtn = document.querySelector('.hamburger-menu');
+            const closeBtn = document.querySelector('.close-menu');
+            const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+            const body = document.body;
+
+            const openNav = () => {
+                if (mobileNavOverlay) mobileNavOverlay.classList.add('is-open');
+                body.classList.add('mobile-nav-open');
+            };
+
+            const closeNav = () => {
+                if (mobileNavOverlay) mobileNavOverlay.classList.remove('is-open');
+                body.classList.remove('mobile-nav-open');
+            };
+
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', openNav);
+            if (closeBtn) closeBtn.addEventListener('click', closeNav);
+
+            // --- LÓGICA DE TRANSICIÓN DE PÁGINA ---
+            const allNavLinks = document.querySelectorAll('.desktop-nav a, .mobile-nav-links a, .header-logo-link');
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    const destinationUrl = new URL(this.href, window.location.origin).href;
+                    const currentUrl = new URL(window.location.href).href;
+
+                    if (this.target === '_blank') {
+                        return; // No aplicar fade-out para enlaces que abren en nueva pestaña
+                    }
+
+                    if (destinationUrl === currentUrl) {
+                        if (mobileNavOverlay.classList.contains('is-open')) {
+                            closeNav();
+                        }
+                        event.preventDefault(); 
+                        return;
+                    }
+                    
+                    event.preventDefault(); 
+                    const destination = this.href;
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = destination;
+                    }, 400);
+                });
+            });
+        });
+    </script>
+<!-- ======== PIE DE PÁGINA ======== -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 | Real Racing Club de Santander. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

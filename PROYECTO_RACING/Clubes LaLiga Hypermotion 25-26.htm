@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubes de Segunda División 25-26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- Iconos de Font Awesome para el menú hamburguesa -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+       <!-- === ICONO PARA NAVEGADOR (CORREGIDO) === -->
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/Real_Racing_Club_de_Santander_logo.svg/1200px-Real_Racing_Club_de_Santander_logo.svg.png" type="image/png"> <!-- CORREGIDO: .png en lugar de .pn -->
+
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --bg-header: #1a1a1a;
+            --white: #ffffff;
+            --border-color: #2a2a2a;
+            --accent-yellow: #f3ca20;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding-top: 80px; /* Espacio para el header fijo */
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+        }
+        body.mobile-nav-open { overflow: hidden; }
+
+        /* --- ESTILOS DEL HEADER Y NAVEGACIÓN --- */
+        .main-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 15px 0; background-color: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+        .main-header.scrolled {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-container {
+            width: 100%;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { height: 50px; transition: transform 0.3s ease; }
+        .logo-link:hover .logo { transform: scale(1.05); }
+
+        .main-nav { display: none; }
+        .main-nav .nav-links {
+            list-style: none; padding: 0; margin: 0; display: flex; gap: 40px;
+        }
+        .main-nav a {
+            color: var(--white); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.9rem;
+            padding: 5px 0; position: relative; transition: color 0.3s;
+        }
+        .main-nav a::after {
+            content: ''; position: absolute; width: 0; height: 3px;
+            background: var(--accent-yellow); bottom: -5px; left: 50%;
+            transform: translateX(-50%); transition: width 0.4s ease;
+        }
+        .main-nav a:hover { color: var(--accent-yellow); }
+        .main-nav a:hover::after { width: 100%; }
+        
+        .hamburger-menu { 
+            display: flex; background: none; border: none;
+            color: var(--white); font-size: 1.8rem; cursor: pointer; padding: 5px;
+        }
+        .mobile-nav-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%;
+            max-width: 400px; height: 100%; background-color: var(--bg-header);
+            z-index: 1001; transition: right 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+        }
+        .mobile-nav-overlay.is-open { right: 0; }
+        .mobile-nav-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 25px; border-bottom: 1px solid var(--border-color); height: 81px;
+        }
+        .mobile-nav-header .logo { height: 45px; }
+        
+        .close-menu {
+            font-size: 2.5rem; font-weight: 300; color: var(--white);
+            cursor: pointer; background: none; border: none; padding: 0;
+            line-height: 1; transition: color 0.3s, transform 0.3s;
+        }
+        .close-menu:hover { color: var(--accent-yellow); transform: rotate(90deg); }
+        
+        .mobile-nav-links ul { list-style: none; padding: 0; margin: 0; }
+        .mobile-nav-links ul li { border-bottom: 1px solid var(--border-color); }
+        .mobile-nav-links a {
+            display: block; padding: 20px 25px; color: var(--white);
+            font-weight: 700; font-size: 1.1rem; text-decoration: none;
+            transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
+        }
+        .mobile-nav-links a:hover {
+            color: var(--accent-yellow);
+            background-color: #252525;
+            padding-left: 30px;
+        }
+
+        /* --- ESTILOS DE LAS TARJETAS --- */
+        main { padding: 40px 20px; }
+        .main-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
+        }
+        .club-card {
+            background-color: #ccc;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            color: #ffffff;
+            padding: 25px 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .club-card:hover { transform: scale(1.04); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .club-name { font-weight: 800; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 5px; }
+        .club-foundation, .stadium-name { font-size: 0.9rem; opacity: 0.8; }
+        .stadium-name { margin-top: 2px; }
+        .stadium-illustration {
+            width: 90%;
+            display: block;
+            margin: 15px auto 0;
+        }
+        
+        @media (min-width: 993px) { .main-nav { display: flex; } .hamburger-menu { display: none; } }
+    </style>
+</head>
+<body>
+  
+    <header class="main-header" id="main-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <img src="./img/logo.png" alt="Logo Racing Club" class="logo">
+            </a>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <!-- ENLACES UNIFICADOS -->
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="plantilla.html">Plantillas</a></li>
+                    <li><a href="historia.html">Historia</a></li>
+                    <li><a href="entradas.html">Entradas</a></li>
+                    <li><a href="Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion 25-26</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+  
+    <div class="mobile-nav-overlay">
+      <div class="mobile-nav-header">
+          <a href="index.html" class="logo-link">
+              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/Real_Racing_Club_de_Santander_logo.svg/1200px-Real_Racing_Club_de_Santander_logo.svg.png" alt="Logo Racing" class="logo">
+          </a>
+          <button class="close-menu" aria-label="Cerrar menú">×</button>
+      </div>
+      <nav class="mobile-nav-links">
+          <ul>
+            <!-- ENLACES UNIFICADOS -->
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="plantilla.html">Plantillas</a></li>
+            <li><a href="historia.html">Historia</a></li>
+            <li><a href="entradas.html">Entradas</a></li>
+          </ul>
+      </nav>
+    </div>
+
+    <main>
+        <h1 class="main-title">Clubes LaLiga Hypermotion 25-26</h1>
+        <div class="clubs-grid" id="clubs-grid-container"></div>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- SECCIÓN DE DATOS ---
+        const STADIUMS = { 
+            'almeria': 'https://assets.laliga.com/assets/2024/10/08/medium/9e6daa295d3fa39df9511239350d185e.png', 
+            'granada': 'https://assets.laliga.com/assets/2024/10/08/medium/dccb19816a802b36f1be88c673c9be41.png', 
+            'cadiz': 'https://assets.laliga.com/assets/2024/10/08/medium/db0f0792e2bbfc9093fd4335281a6de3.png', 
+            'cordoba': 'https://assets.laliga.com/assets/2024/10/08/medium/5deb527210650eb710fd670d5e8a9d72.png', 
+            'malaga': 'https://assets.laliga.com/assets/2024/10/08/medium/9c56a89d15a67cae2a00ea374b0d5a4b.png', 
+            'huesca': 'https://assets.laliga.com/assets/2024/10/08/medium/1082b575b6a1cc96fd14b85824bb127f.png', 
+            'zaragoza': 'https://assets.laliga.com/assets/2024/10/08/medium/3066df50d24c641ed277c66d1dbce293.png', 
+            'sporting': 'https://assets.laliga.com/assets/2024/10/08/medium/2db5e845a791ccde9ca392018a518416.png', 
+            'racing': 'https://assets.laliga.com/assets/2024/10/08/medium/332306883b6909d0439229ac94561290.png', 
+            'valladolid': 'https://assets.laliga.com/assets/2024/10/01/medium/4bf82f6166a746ec35507e4d2cb97197.png', 
+            'mirandes': 'https://assets.laliga.com/assets/2024/10/08/medium/41c842bfa5c9d707e3a63359063230d7.png', 
+            'burgos': 'https://assets.laliga.com/assets/2024/10/08/medium/e9959985ddb7ea3b439c33338c26e83a.png', 
+            'albacete': 'https://assets.laliga.com/assets/2024/10/08/medium/d954225cf15b4753280a57f77b2abe92.png', 
+            'leganes': 'https://assets.laliga.com/assets/2024/10/01/medium/f8c1ba339c509c737140c66da97b4d36.png', 
+            'castellon': 'https://assets.laliga.com/assets/2024/10/08/medium/6be9256890c6d48162a47218f8eb23a2.png', 
+            'deportivo': 'https://assets.laliga.com/assets/2024/10/08/medium/12c7d4413f1f1b32c48b5d8ed180d7d5.png', 
+            'laspalmas': 'https://assets.laliga.com/assets/2024/10/01/medium/52d470bafe1b76ca37a0604f8b07ec8d.png', 
+            'eibar': 'https://assets.laliga.com/assets/2024/10/08/medium/29d2f2644c251bd2a15954581ddc9ac7.png', 
+            'andorra': './img/estadinacional.png', 
+            'realsociedadb': 'https://www.bdfutbol.com/i/c/103.jpg', // <-- CORREGIDO: Clave simple y URL del estadio
+            'cultural': 'img/reinoleón.jpeg', 
+            'ceuta': 'img/ceuta.png' 
+        };
+        
+        const teams = [ 
+            { name: 'UD Almería', key: 'almeria', foundationYear: '1989', stadiumName: 'Power Horse Stadium', cardColor: '#D30024' }, 
+            { name: 'Granada CF', key: 'granada', foundationYear: '1931', stadiumName: 'Nuevo Los Cármenes', cardColor: '#CF122D' }, 
+            { name: 'Cádiz CF', key: 'cadiz', foundationYear: '1910', stadiumName: 'Nuevo Mirandilla', cardColor: '#00458C' }, 
+            { name: 'Córdoba CF', key: 'cordoba', foundationYear: '1954', stadiumName: 'El Arcángel', cardColor: '#89C01F' }, 
+            { name: 'Málaga CF', key: 'malaga', foundationYear: '1948', stadiumName: 'La Rosaleda', cardColor: '#0078B4' }, 
+            { name: 'SD Huesca', key: 'huesca', foundationYear: '1960', stadiumName: 'El Alcoraz', cardColor: '#C10023' }, 
+            { name: 'Real Zaragoza', key: 'zaragoza', foundationYear: '1932', stadiumName: 'La Romareda', cardColor: '#004A99' }, 
+            { name: 'Real Sporting', key: 'sporting', foundationYear: '1905', stadiumName: 'El Molinón', cardColor: '#D30313' }, 
+            { name: 'Racing Club', key: 'racing', foundationYear: '1913', stadiumName: 'El Sardinero', cardColor: '#008C4F' }, 
+            { name: 'Real Valladolid', key: 'valladolid', foundationYear: '1928', stadiumName: 'José Zorrilla', cardColor: '#5C2D8F' }, 
+            { name: 'CD Mirandés', key: 'mirandes', foundationYear: '1927', stadiumName: 'Anduva', cardColor: '#D30213' }, 
+            { name: 'Burgos CF', key: 'burgos', foundationYear: '1985', stadiumName: 'El Plantío', cardColor: '#231F20' }, 
+            { name: 'Cultural Leonesa', key: 'cultural', foundationYear: '1923', stadiumName: 'Reino de León', cardColor: '#121212' }, 
+            { name: 'Albacete BP', key: 'albacete', foundationYear: '1940', stadiumName: 'Carlos Belmonte', cardColor: '#1A3357' }, 
+            { name: 'CD Leganés', key: 'leganes', foundationYear: '1928', stadiumName: 'Butarque', cardColor: '#0059A1' }, 
+            { name: 'CD Castellón', key: 'castellon', foundationYear: '1922', stadiumName: 'Castalia', cardColor: '#212121' }, 
+            { name: 'RC Deportivo', key: 'deportivo', foundationYear: '1906', stadiumName: 'Riazor', cardColor: '#0055A4' }, 
+            { name: 'UD Las Palmas', key: 'laspalmas', foundationYear: '1949', stadiumName: 'Estadio Gran Canaria', cardColor: '#FFC400' }, 
+            { name: 'SD Eibar', key: 'eibar', foundationYear: '1940', stadiumName: 'Ipurua', cardColor: '#9D0430' }, 
+            { name: 'AD Ceuta FC', key: 'ceuta', foundationYear: '2012', stadiumName: 'Alfonso Murube', cardColor: '#2E2E2E' }, 
+            { name: 'FC Andorra', key: 'andorra', foundationYear: '1942', stadiumName: 'Estadi Nacional', cardColor: '#002C79' }, 
+            { name: 'Real Sociedad B', key: 'realsociedadb', foundationYear: '1951', stadiumName: 'José Luis Orbegozo', cardColor: '#0B4394' }, // <-- CORREGIDO: Nombre, key y datos
+        ];
+        
+        // --- LÓGICA PARA GENERAR LAS TARJETAS DE EQUIPOS ---
+        const gridContainer = document.getElementById('clubs-grid-container');
+        if (gridContainer) {
+            teams.forEach(team => { 
+                const card = document.createElement('div'); 
+                card.className = 'club-card'; 
+                card.style.backgroundColor = team.cardColor; 
+                card.innerHTML = `<h2 class="club-name">${team.name}</h2><p class="club-foundation">Fundación ${team.foundationYear}</p><p class="stadium-name">${team.stadiumName}</p><img src="${STADIUMS[team.key]}" alt="Estadio ${team.name}" class="stadium-illustration">`; 
+                gridContainer.appendChild(card); 
+            });
+        }
+        
+        // --- LÓGICA PARA EL MENÚ HAMBURGUESA ---
+        const hamburgerBtn = document.querySelector('.hamburger-menu');
+        const closeBtn = document.querySelector('.close-menu');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const body = document.body;
+        
+        const openNav = () => {
+            if (mobileNavOverlay) {
+                mobileNavOverlay.classList.add('is-open');
+                body.classList.add('mobile-nav-open');
+            }
+        };
+        
+        const closeNav = () => {
+            if (mobileNavOverlay) {
+                mobileNavOverlay.classList.remove('is-open');
+                body.classList.remove('mobile-nav-open');
+            }
+        };
+        
+        if (hamburgerBtn) { hamburgerBtn.addEventListener('click', openNav); }
+        if (closeBtn) { closeBtn.addEventListener('click', closeNav); }
+        
+        // Cierra el menú si se hace clic en un enlace
+        if (mobileNavOverlay) {
+            mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (body.classList.contains('mobile-nav-open')) {
+                        closeNav();
+                    }
+                });
+            });
+        }
+
+        // --- LÓGICA PARA EL CAMBIO DE FONDO DEL HEADER AL HACER SCROLL ---
+        const header = document.getElementById('main-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }, { passive: true });
+        }
+    });
+    </script>
+</body> 
+</html>
