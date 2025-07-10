@@ -24,7 +24,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             margin: 0;
-            /* Dejamos el espacio para el header fijo */
             padding-top: 81px;
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
@@ -98,7 +97,6 @@
             transition: opacity 0.3s ease, top 0.3s ease;
         }
         
-        /* Regla clave para que el dropdown no se salga de la pantalla a la derecha */
         .nav-links > .dropdown:last-child .dropdown-menu {
             left: auto;
             right: 0;
@@ -164,6 +162,7 @@
         .mobile-dropdown .fa-chevron-down {
             transition: transform 0.3s ease;
         }
+        /* La clase que usa el JS es "is-open" (con un guion) */
         .mobile-dropdown.is-open .fa-chevron-down {
             transform: rotate(180deg);
         }
@@ -171,6 +170,7 @@
             list-style: none; padding: 0; margin: 0; background-color: #0d0f21;
             max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
         }
+        /* La clase que usa el JS es "is-open" (con un guion) */
         .mobile-dropdown.is-open .mobile-dropdown-content {
             max-height: 500px;
         }
@@ -187,13 +187,12 @@
             .hamburger-menu { display: none; } 
         }
 
-        /* --- ESTILOS DEL CONTENIDO PRINCIPAL (DE TU CÓDIGO) --- */
+        /* --- ESTILOS DEL CONTENIDO PRINCIPAL --- */
         main {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
-            /* La altura mínima asegura que ocupe al menos toda la pantalla visible */
             min-height: calc(100vh - 81px);
         }
         .image-container {
@@ -268,7 +267,6 @@
       </nav>
     </div>
 
-    <!-- Contenido principal de tu código -->
     <main>
         <div class="image-container">
             <img src="./img/equiposs.JPG" alt="Clubes de LaLiga Hypermotion para la temporada 2025/2026" class="main-image">
@@ -311,7 +309,9 @@
             mobileDropdownToggle.addEventListener('click', (event) => {
                 event.preventDefault();
                 const parentLi = mobileDropdownToggle.closest('.mobile-dropdown');
-                parentLi.classList.toggle('is--open');
+                
+                // ✅ CORRECCIÓN AQUÍ: Cambiado de 'is--open' a 'is-open'
+                parentLi.classList.toggle('is-open'); 
             });
         }
         
