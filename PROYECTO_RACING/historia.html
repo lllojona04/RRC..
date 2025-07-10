@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia - Real Racing Club</title>
+    
+    <!-- Fuentes (Poppins para el Nav, Montserrat para el contenido) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Librería de Iconos para el dropdown -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon de la página -->
+    <link rel="icon" type="image/png" href="./img/logo.png">
+
+    <style>
+        /* === VARIABLES CSS GLOBALES === */
+        :root {
+            --racing-green: #006B3F;
+            --accent-yellow: #f3ca20;
+            --bg-dark: #121212;
+            --bg-header: #1a1a1a;
+            --white: #ffffff;
+            --border-color: #2a2a2a;
+        }
+
+        /* === ESTILOS GENERALES Y DEL BODY === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding-top: 81px; /* Espacio para el header fijo */
+            font-family: 'Poppins', sans-serif; /* Fuente principal de la navegación */
+            background-color: var(--bg-dark);
+            color: var(--white);
+        }
+        body.mobile-nav-open { overflow: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        ul { list-style: none; }
+
+        /* --- ESTILOS DEL HEADER Y NAVEGACIÓN (LA VERSIÓN BUENA) --- */
+        .main-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 15px 0; background-color: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+        .main-header.scrolled {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-container {
+            width: 100%; padding: 0 30px; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .logo { height: 50px; transition: transform 0.3s ease; }
+        .logo-link:hover .logo { transform: scale(1.05); }
+
+        .main-nav { display: none; }
+        .main-nav .nav-links {
+            list-style: none; padding: 0; margin: 0; display: flex; gap: 40px;
+            align-items: center;
+        }
+        .main-nav a {
+            color: var(--white); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.9rem;
+            padding: 5px 0; position: relative; transition: color 0.3s;
+        }
+        .main-nav a::after {
+            content: ''; position: absolute; width: 0; height: 3px;
+            background: var(--accent-yellow); bottom: -5px; left: 50%;
+            transform: translateX(-50%); transition: width 0.4s ease;
+        }
+        .main-nav a:hover, .main-nav .dropdown-toggle:hover { color: var(--accent-yellow); }
+        .main-nav a:hover::after, .main-nav li.active a::after { width: 100%; }
+        .main-nav li.active a { color: var(--accent-yellow); } /* Estilo para el enlace activo */
+
+        .dropdown { position: relative; }
+        .dropdown-toggle {
+            cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+        .dropdown-toggle .fa-chevron-down {
+            font-size: 0.7rem; transition: transform 0.3s ease;
+        }
+        .dropdown:hover .dropdown-toggle .fa-chevron-down { transform: rotate(180deg); }
+        .dropdown-menu {
+            position: absolute; top: 150%; left: 0;
+            background-color: var(--bg-header); list-style: none;
+            padding: 10px 0; margin: 0; border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5); min-width: 240px;
+            width: max-content; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, top 0.3s ease;
+        }
+        .nav-links > .dropdown:last-child .dropdown-menu { left: auto; right: 0; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; top: 100%; }
+        .dropdown-menu li { border-bottom: 1px solid var(--border-color); }
+        .dropdown-menu li:last-child { border-bottom: none; }
+        .dropdown-menu li a {
+            display: block; padding: 12px 20px; white-space: nowrap; font-size: 0.85rem;
+        }
+        .dropdown-menu li a::after { display: none; }
+        .dropdown-menu li a:hover {
+            background-color: #252525; color: var(--accent-yellow);
+        }
+        .dropdown-header {
+            padding: 12px 20px; font-weight: 800; color: var(--accent-yellow);
+            font-size: 0.9rem; text-transform: uppercase;
+        }
+        
+        .hamburger-menu { 
+            display: flex; background: none; border: none;
+            color: var(--white); font-size: 1.8rem; cursor: pointer; padding: 5px;
+        }
+        .mobile-nav-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%;
+            max-width: 400px; height: 100%; background-color: var(--bg-header);
+            z-index: 1001; transition: right 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+        }
+        .mobile-nav-overlay.is-open { right: 0; }
+        .mobile-nav-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 25px; border-bottom: 1px solid var(--border-color); height: 81px;
+        }
+        .mobile-nav-header .logo { height: 45px; }
+        .close-menu {
+            font-size: 2.5rem; font-weight: 300; color: var(--white);
+            cursor: pointer; background: none; border: none; padding: 0;
+            line-height: 1; transition: color 0.3s, transform 0.3s;
+        }
+        .close-menu:hover { color: var(--accent-yellow); transform: rotate(90deg); }
+        .mobile-nav-links ul li { border-bottom: 1px solid var(--border-color); }
+        .mobile-nav-links a {
+            display: block; padding: 20px 25px; color: var(--white);
+            font-weight: 700; font-size: 1.1rem; text-decoration: none;
+            transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
+        }
+        .mobile-nav-links a:hover, .mobile-nav-links li.active a {
+            color: var(--accent-yellow); background-color: #252525;
+        }
+        .mobile-dropdown .dropdown-toggle {
+            display: flex; justify-content: space-between; align-items: center; width: 100%;
+        }
+        .mobile-dropdown .fa-chevron-down { transition: transform 0.3s ease; }
+        .mobile-dropdown.is-open .fa-chevron-down { transform: rotate(180deg); }
+        .mobile-dropdown-content {
+            list-style: none; padding: 0; margin: 0; background-color: #0d0f21;
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
+        }
+        .mobile-dropdown.is-open .mobile-dropdown-content { max-height: 500px; }
+        .mobile-dropdown-content a { padding-left: 45px !important; font-size: 1rem; font-weight: 400; }
+        .mobile-dropdown-content a:hover { padding-left: 50px !important; }
+        .mobile-dropdown-content .dropdown-header { padding: 15px 45px 10px; font-size: 0.9rem; }
+        
+        @media (min-width: 993px) { 
+            .main-nav { display: flex; } 
+            .hamburger-menu { display: none; } 
+        }
+
+        /* --- ESTILOS DEL CONTENIDO DE LA PÁGINA "HISTORIA" --- */
+        main {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .page-title-section {
+            height: 40vh; background-size: cover; background-position: center;
+            position: relative; display: flex; align-items: flex-end; justify-content: center;
+        }
+        .page-title-section::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, var(--bg-dark) 10%, transparent 80%);
+        }
+        .content-section { padding: 40px 0; }
+        .content-box {
+            background-color: #1f1f1f; padding: 30px; border-radius: 12px;
+            max-width: 900px; margin: -80px auto 0 auto;
+            position: relative; z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .content-box h2 {
+            text-align: center; font-size: 2.2rem; font-weight: 900;
+            margin-bottom: 20px; color: var(--accent-yellow);
+        }
+        .content-box p { line-height: 1.8; color: #ccc; margin-bottom: 15px; }
+        .pillar { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+        .pillar:first-of-type { border-top: none; }
+        .pillar h3 { font-size: 1.5rem; color: var(--white); margin-bottom: 15px; }
+        .pillar img { border-radius: 8px; margin-top: 20px; }
+        .pillar ul { list-style: disc; padding-left: 20px; color: #ccc; }
+        .pillar ul li { margin-bottom: 10px; line-height: 1.7; }
+        
+        @media (max-width: 768px) {
+            .header-container { padding: 0 20px; }
+            .content-box { padding: 25px 20px; }
+            .content-box h2 { font-size: 1.8rem; }
+        }
+
+        /* --- FOOTER --- */
+        .main-footer {
+            background-color: #111; padding: 30px 0;
+            text-align: center; color: #a0a0a0; font-size: 0.9rem;
+            margin-top: 40px; border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+  
+    <!-- NAVEGACIÓN AVANZADA -->
+    <header class="main-header" id="main-header">
+        <div class="header-container">
+            <a href="./index.html" class="logo-link">
+                <img src="./img/logo.png" alt="Logo Real Racing Club" class="logo">
+            </a>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="./index.html">Inicio</a></li>
+                    <li><a href="./plantilla.html">Plantillas</a></li>
+                    <li class="active"><a href="./historia.html">Historia</a></li>
+                    <li><a href="./entradas.html">Entradas</a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle">
+                            Clubes <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><p class="dropdown-header">Secciones</p></li>
+                            <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion</a></li>
+                            <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+  
+    <div class="mobile-nav-overlay">
+      <div class="mobile-nav-header">
+          <a href="./index.html" class="logo-link">
+              <img src="./img/logo.png" alt="Logo de la Empresa" class="logo">
+          </a>
+          <button class="close-menu" aria-label="Cerrar menú">×</button>
+      </div>
+      <nav class="mobile-nav-links">
+          <ul>
+            <li><a href="./index.html">Inicio</a></li>
+            <li><a href="./plantilla.html">Plantillas</a></li>
+            <li class="active"><a href="./historia.html">Historia</a></li>
+            <li><a href="./entradas.html">Entradas</a></li>
+            <li class="mobile-dropdown">
+                <a href="#" class="dropdown-toggle">
+                    <span>Clubes</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="mobile-dropdown-content">
+                    <li><p class="dropdown-header">Secciones</p></li>
+                    <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion</a></li>
+                    <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
+                </ul>
+            </li>
+          </ul>
+      </nav>
+    </div>
+
+    <!-- CONTENIDO DE LA PÁGINA "HISTORIA" -->
+    <main>
+        <section class="page-title-section" style="background-image: url('https://media.gettyimages.com/id/121852445/es/foto/los-campos-de-sport-del-sardinero-home-of-racing-santander.jpg?s=2048x2048&w=gi&k=20&c=N5854lB97x6i4QyWzQ68qVl7u3y-L0hDk4Lq765w3_A=');">
+            <div class="container"></div>
+        </section>
+        
+        <section class="content-section">
+            <div class="container content-box">
+                <h2>Un Recorrido por Nuestra Historia y Símbolos</h2>
+                <p>Fundado en 1913, el Real Racing Club es uno de los clubes históricos del fútbol español. Su trayectoria, símbolos e himno están marcados por épocas doradas, momentos difíciles y una afición inquebrantable que representa el alma de Cantabria.</p>
+                
+                <div class="pillar">
+                    <h3>Fundación y Años Dorados (1913-1936)</h3>
+                    <p>El club nace oficialmente en 1913 y rápidamente se consolida como una de las potencias del norte. En 1928, se convierte en uno de los diez clubes fundadores de la Primera División. La década de 1930 marca su primera gran época dorada, culminando con un histórico subcampeonato de Liga en la temporada 1930-31, compitiendo de tú a tú con gigantes como el Real Madrid y el Athletic Club.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Guerra Civil y Años de Plata (1936-1990)</h3>
+                    <p>La Guerra Civil interrumpió la competición y, en la posguerra, el club atravesó décadas de altibajos, consolidándose como un "equipo ascensor" entre Primera y Segunda División. Durante parte del franquismo, debido a la prohibición de extranjerismos, el club adoptó temporalmente el nombre de Real Santander SD, recuperando su denominación original en 1973.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Época Moderna y Gesta Europea (1990-2008)</h3>
+                    <p>Los años 90 y 2000 trajeron una estabilidad renovada en la máxima categoría. Con figuras legendarias como Pedro Munitis, Gonzalo Colsa, Nikola Žigić o Ezequiel Garay, el club vivió grandes noches en El Sardinero. El punto álgido llegó en la temporada 2007-08, con una clasificación histórica para la Copa de la UEFA, llevando el nombre de Santander por toda Europa por primera vez.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Crisis y Resiliencia (2008-Presente)</h3>
+                    <p>Tras el éxito europeo, el club se sumió en una profunda crisis económica e institucional que lo llevó a descender hasta Segunda B. En 2014, la plantilla protagonizó una histórica protesta al negarse a jugar un partido de Copa del Rey por los impagos, un acto que simbolizó la lucha del racinguismo. Gracias al empuje de su afición, el club ha resurgido y en 2022 logró el ascenso a Segunda División, donde se ha consolidado como un equipo fuerte y con aspiraciones.</p>
+                </div>
+                <div class="pillar">
+                    <h3>El Escudo: Identidad y Tradición</h3>
+                    <p>El escudo del Racing es un resumen de su historia. Sobre las iniciales 'R' y 'C' entrelazadas, se alza la corona real otorgada por el rey Alfonso XIII en 1913. El círculo contiene la bandera de Santander y un ancla, símbolo de la profunda conexión de la ciudad con el mar Cantábrico. Es un emblema que representa la realeza, la ciudad y el espíritu marinero de Cantabria.</p>
+                    <img src="https://www.estadiodeportivo.com/imagenes/e69f898c-3302-429d-8c7a-c1a17181d899_530x978.octet-stream" alt="Escudo histórico del Racing">
+                </div>
+                <div class="pillar">
+                    <h3>El Himno: Un Canto a la Afición</h3>
+                    <p>A diferencia de otros himnos, el del Racing es una composición moderna y un homenaje directo a sus seguidores. Creado por el músico cántabro Nando Agüeros para el centenario del club en 2013, el "Himno a la Afición" celebra la lealtad inquebrantable de los racinguistas, especialmente durante los años más difíciles. Sus letras evocan el viento, el mar y el orgullo verdiblanco, convirtiéndose en un canto emocional que resuena en El Sardinero antes de cada partido.</p>
+                </div>
+                <div class="pillar">
+                    <h3>El Estadio: El Sardinero</h3>
+                    <p>El templo del racinguismo es el Estadio de El Sardinero, inaugurado en 1988 sobre el solar del antiguo campo, que databa de 1913. Con una capacidad cercana a los 22.000 espectadores, sus gradas han sido testigo de las mayores hazañas y han albergado el latido de la afición verdiblanca durante generaciones.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Palmarés y Datos Destacados</h3>
+                     <ul>
+                        <li><b>Identidad:</b> Camiseta blanca, pantalón negro y detalles verdes.</li>
+                        <li><b>Participaciones en Primera División:</b> 44 temporadas.</li>
+                        <li><b>Mejor Puesto en Liga:</b> 2º lugar (Temporada 1930-31).</li>
+                        <li><b>Clasificación Europea:</b> 1 participación en la Copa de la UEFA (2008-09).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 | Real Racing Club de Santander. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <!-- SCRIPT UNIFICADO PARA LA NAVEGACIÓN -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburgerBtn = document.querySelector('.hamburger-menu');
+        const closeBtn = document.querySelector('.close-menu');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const body = document.body;
+        
+        const openNav = () => {
+            if (mobileNavOverlay) {
+                mobileNavOverlay.classList.add('is-open');
+                body.classList.add('mobile-nav-open');
+            }
+        };
+        
+        const closeNav = () => {
+            if (mobileNavOverlay) {
+                mobileNavOverlay.classList.remove('is-open');
+                body.classList.remove('mobile-nav-open');
+            }
+        };
+        
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', openNav);
+        if (closeBtn) closeBtn.addEventListener('click', closeNav);
+        
+        // Cierra el menú si se hace clic en un enlace (excepto el desplegable)
+        if (mobileNavOverlay) {
+            mobileNavOverlay.querySelectorAll('a:not(.dropdown-toggle)').forEach(link => {
+                link.addEventListener('click', closeNav);
+            });
+        }
+        
+        // Funcionalidad para el desplegable del menú móvil
+        const mobileDropdownToggle = document.querySelector('.mobile-dropdown .dropdown-toggle');
+        
+        if (mobileDropdownToggle) {
+            mobileDropdownToggle.addEventListener('click', (event) => {
+                event.preventDefault(); // Previene que el enlace navegue
+                const parentLi = mobileDropdownToggle.closest('.mobile-dropdown');
+                parentLi.classList.toggle('is-open');
+            });
+        }
+        
+        // Script para el header con scroll
+        const header = document.getElementById('main-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }, { passive: true });
+        }
+    });
+    </script>
+</body> 
+</html>
