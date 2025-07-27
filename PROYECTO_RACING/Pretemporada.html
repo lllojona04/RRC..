@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
     
- <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="icon" type="image/png" href="./img/logo.png">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -23,27 +23,24 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* --- CAMBIO 1: PREPARAR EL LAYOUT DE PÁGINA COMPLETA --- */
         html, body {
             height: 100%;
-            overflow: hidden; /* Ocultamos el scroll de forma general y segura */
+            overflow: hidden; 
         }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             display: flex;
-            flex-direction: column; /* Estructura vertical: header arriba, main abajo */
+            flex-direction: column; 
         }
         body.mobile-nav-open { overflow: hidden; }
 
         /* --- ESTILOS DEL HEADER Y NAVEGACIÓN (Sin cambios) --- */
         .main-header {
-            /* CAMBIADO: de 'fixed' a 'relative' para que forme parte del flujo flexbox */
             position: relative; 
             z-index: 1000;
-            padding: 15px 0; background-color: var(--bg-header); /* Fondo sólido por defecto */
+            padding: 15px 0; background-color: var(--bg-header);
             border-bottom: 1px solid var(--border-color);
-            /* Quitamos transiciones y backdrop-filter que ya no aplican sin ser fijo */
         }
         .header-container {
             width: 100%;
@@ -186,23 +183,44 @@
             .hamburger-menu { display: none; } 
         }
 
-        /* --- CAMBIO 2: ESTILOS PARA EL CONTENIDO PRINCIPAL --- */
+        /* --- ESTILOS PARA EL CONTENIDO PRINCIPAL --- */
         .main-content {
-            flex-grow: 1; /* Hace que este contenedor ocupe todo el espacio sobrante */
+            flex-grow: 1; 
             display: flex;
+            /* CAMBIO: align-items: stretch para que todas las tarjetas tengan la misma altura */
+            align-items: stretch; 
             justify-content: center;
-            align-items: center; /* Centra la imagen verticalmente en el espacio disponible */
-            padding: 20px;
-            overflow: hidden; /* Evita cualquier posible desbordamiento interno */
+            padding: 30px; 
+            overflow: hidden; 
+            gap: 30px; 
+            max-height: calc(100vh - 81px);
         }
 
-        .main-content img {
-            max-width: 100%;
-            max-height: 100%; /* La imagen no puede ser más alta que el contenedor */
-            object-fit: contain; /* Asegura que toda la imagen se vea, sin ser cortada o deformada */
-            height: auto;
+        /* ---- ESTILOS PARA LA TARJETA CONTENEDORA DE LA IMAGEN ---- */
+        .image-card {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            /* CAMBIO: Se añade un fondo para el efecto 'marco' y padding */
+            background-color: var(--bg-header);
+            padding: 20px;
+        }
+        
+        /* ---- ESTILOS PARA LA IMAGEN DENTRO DE LA TARJETA ---- */
+        .image-card img {
+            display: block;
+            /* CAMBIO: La imagen no fuerza el tamaño, se adapta al contenedor */
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            /* CAMBIO CLAVE: De 'cover' a 'contain' para que no se corte nada */
+            object-fit: contain; 
+            border-radius: 4px; /* Un ligero redondeo a la imagen misma */
         }
     </style>
 </head>
@@ -263,11 +281,19 @@
       </nav>
     </div>
 
+    <!-- HTML no cambia, las imágenes siguen dentro de su 'image-card' -->
     <main class="main-content">
-        <img src="./img/Captura_de_pantalla_2025-07-09_171905.png" alt="Partidos Pretemporada">
+        <div class="image-card">
+            <img src="./img/Captura_de_pantalla_2025-07-09_171905.png" alt="Partido amistoso general">
+        </div>
+        <div class="image-card">
+            <img src="./img/LA MARUCA.png" alt="Partido amistoso en La Maruca">
+        </div>
+        <div class="image-card">
+            <img src="./img/SARDINERO.png" alt="Partido amistoso en El Sardinero">
+        </div>
     </main>
 
-    <!-- El script no ha sido modificado, pero el efecto de 'scrolled' en el header ya no se activará -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const hamburgerBtn = document.querySelector('.hamburger-menu');
@@ -308,7 +334,6 @@
             });
         }
         
-        // Esta parte ya no tendrá efecto visual porque no hay scroll, pero no hace daño dejarla
         const header = document.getElementById('main-header');
         if (header) {
             window.addEventListener('scroll', () => {
