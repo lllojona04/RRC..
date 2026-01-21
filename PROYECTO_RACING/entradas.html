@@ -16,31 +16,29 @@
     <link rel="icon" type="image/png" href="./img/entradas de futbol.png">
 
     <style>
-        /* === VARIABLES CSS COMBINADAS DE AMBOS ARCHIVOS === */
+        /* === VARIABLES CSS VERDE RACING === */
         :root {
-            /* Del primer código (Navegación) */
-            --bg-color: #0d0f21;
-            --bg-header: #1a1a1a;
-            --white: #ffffff;
-            --border-color: #2a2a2a;
-            --accent-yellow: #f3ca20;
-
-            /* Del segundo código (Contenido) */
             --racing-green: #006B3F;
-            --bg-dark-grey: #222222;
-            --text-dark: #333333;
-            --text-light: #ffffff;
-            --bg-content-box: #252525;
+            --racing-green-dark: #004d2f;
+            --racing-green-light: #008552;
+            --accent-yellow: #f3ca20;
+            --bg-green: #0a4a2e;
+            --bg-header-green: #006B3F;
+            --card-green: #1a5c3f;
+            --white: #ffffff;
+            --text-light: #e0f0e0;
+            --text-grey: #c8e6d0;
+            --border-green: #00a65b;
         }
 
         /* === ESTILOS GENERALES Y DEL BODY === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             margin: 0;
-            padding-top: 81px; /* Espacio para el header fijo */
-            font-family: 'Poppins', sans-serif; /* Fuente principal de la navegación */
-            background-color: var(--bg-dark-grey); /* Fondo del segundo código */
-            color: var(--text-light);
+            padding-top: 81px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-green) 0%, var(--racing-green-dark) 100%);
+            color: var(--white);
         }
         body.mobile-nav-open { overflow: hidden; }
         body.fade-out {
@@ -50,20 +48,23 @@
         ul { list-style: none; margin: 0; padding: 0; }
         a { text-decoration: none; color: inherit; }
 
-        /* --- ESTILOS DEL HEADER Y NAVEGACIÓN (DEL PRIMER CÓDIGO) --- */
+        /* --- HEADER Y NAVEGACIÓN VERDE --- */
         .main-header {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            padding: 15px 0; background-color: rgba(26, 26, 26, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid transparent;
-            transition: background-color 0.4s ease, border-color 0.4s ease;
+            padding: 15px 0; 
+            background: linear-gradient(180deg, rgba(0,107,63,0.95), rgba(10,74,46,0.95));
+            backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--border-green);
+            transition: all 0.4s;
         }
         .main-header.scrolled {
-            background-color: var(--bg-header);
-            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(180deg, var(--racing-green), var(--racing-green-dark));
+            border-bottom: 4px solid var(--accent-yellow);
+            box-shadow: 0 8px 32px rgba(0,107,63,0.4);
         }
         .header-container {
-            width: 100%; padding: 0 30px; display: flex;
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 30px; display: flex;
             justify-content: space-between; align-items: center;
         }
         .logo { height: 50px; transition: transform 0.3s ease; }
@@ -76,7 +77,7 @@
         }
         .main-nav a {
             color: var(--white); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.9rem;
-            padding: 5px 0; position: relative; transition: color 0.3s;
+            padding: 5px 0; position: relative; transition: all 0.3s;
         }
         .main-nav a::after {
             content: ''; position: absolute; width: 0; height: 3px;
@@ -84,8 +85,9 @@
             transform: translateX(-50%); transition: width 0.4s ease;
         }
         .main-nav a:hover, .main-nav .dropdown-toggle:hover { color: var(--accent-yellow); }
-        .main-nav a:hover::after { width: 100%; }
-        
+        .main-nav a:hover::after, .main-nav li.active a::after { width: 100%; }
+        .main-nav li.active a { color: var(--accent-yellow); }
+
         .dropdown { position: relative; }
         .dropdown-toggle {
             cursor: pointer; display: flex; align-items: center; gap: 8px;
@@ -93,46 +95,48 @@
         .dropdown-toggle .fa-chevron-down {
             font-size: 0.7rem; transition: transform 0.3s ease;
         }
-        .dropdown:hover .dropdown-toggle .fa-chevron-down {
-            transform: rotate(180deg);
-        }
+        .dropdown:hover .dropdown-toggle .fa-chevron-down { transform: rotate(180deg); }
         .dropdown-menu {
             position: absolute; top: 150%; left: 0;
-            background-color: var(--bg-header); list-style: none;
-            padding: 10px 0; margin: 0; border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5); min-width: 240px;
+            background: linear-gradient(145deg, var(--racing-green), var(--racing-green-dark));
+            list-style: none; padding: 10px 0; margin: 0; border-radius: 12px;
+            box-shadow: 0 12px 35px rgba(0,107,63,0.6); min-width: 240px;
             width: max-content; opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, top 0.3s ease;
+            transition: all 0.3s; border: 2px solid var(--border-green);
         }
         .nav-links > .dropdown:last-child .dropdown-menu { left: auto; right: 0; }
         .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; top: 100%; }
-        .dropdown-menu li { border-bottom: 1px solid var(--border-color); }
+        .dropdown-menu li { border-bottom: 1px solid var(--border-green); }
         .dropdown-menu li:last-child { border-bottom: none; }
         .dropdown-menu li a {
             display: block; padding: 12px 20px; white-space: nowrap; font-size: 0.85rem;
+            color: var(--text-light);
         }
         .dropdown-menu li a::after { display: none; }
         .dropdown-menu li a:hover {
-            background-color: #252525; color: var(--accent-yellow);
+            background-color: var(--racing-green-light); color: var(--accent-yellow);
         }
-        .dropdown-header {
-            padding: 12px 20px; font-weight: 800; color: var(--accent-yellow);
-            font-size: 0.9rem; text-transform: uppercase;
-        }
-        
+
         .hamburger-menu { 
             display: flex; background: none; border: none;
             color: var(--white); font-size: 1.8rem; cursor: pointer; padding: 5px;
+            transition: all 0.3s;
+        }
+        .hamburger-menu:hover {
+            background: var(--racing-green-light);
+            transform: scale(1.1);
         }
         .mobile-nav-overlay {
             position: fixed; top: 0; right: -100%; width: 100%;
-            max-width: 400px; height: 100%; background-color: var(--bg-header);
+            max-width: 400px; height: 100%; 
+            background: linear-gradient(180deg, var(--racing-green), var(--racing-green-dark));
             z-index: 1001; transition: right 0.4s cubic-bezier(0.77, 0, 0.18, 1);
         }
         .mobile-nav-overlay.is-open { right: 0; }
         .mobile-nav-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 25px; border-bottom: 1px solid var(--border-color); height: 81px;
+            padding: 15px 25px; border-bottom: 2px solid var(--border-green); height: 81px;
+            background: rgba(0,107,63,0.3);
         }
         .mobile-nav-header .logo { height: 45px; }
         .close-menu {
@@ -141,14 +145,14 @@
             line-height: 1; transition: color 0.3s, transform 0.3s;
         }
         .close-menu:hover { color: var(--accent-yellow); transform: rotate(90deg); }
-        .mobile-nav-links ul li { border-bottom: 1px solid var(--border-color); }
+        .mobile-nav-links ul li { border-bottom: 1px solid var(--border-green); }
         .mobile-nav-links a {
             display: block; padding: 20px 25px; color: var(--white);
             font-weight: 700; font-size: 1.1rem; text-decoration: none;
-            transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
+            transition: all 0.3s;
         }
         .mobile-nav-links a:hover {
-            color: var(--accent-yellow); background-color: #252525; padding-left: 30px;
+            color: var(--accent-yellow); background-color: var(--racing-green-light); padding-left: 30px;
         }
         .mobile-dropdown .dropdown-toggle {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
@@ -156,7 +160,7 @@
         .mobile-dropdown .fa-chevron-down { transition: transform 0.3s ease; }
         .mobile-dropdown.is-open .fa-chevron-down { transform: rotate(180deg); }
         .mobile-dropdown-content {
-            list-style: none; padding: 0; margin: 0; background-color: #0d0f21;
+            list-style: none; padding: 0; margin: 0; background-color: var(--racing-green-dark);
             max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
         }
         .mobile-dropdown.is-open .mobile-dropdown-content { max-height: 500px; }
@@ -168,32 +172,59 @@
             .hamburger-menu { display: none; } 
         }
 
-        /* --- ESTILOS DEL CONTENIDO PRINCIPAL (DEL SEGUNDO CÓDIGO) --- */
+        /* --- LOADER VERDE --- */
         #ticket-loader {
-            position: fixed; width: 100%; height: 100%; top:0; left:0; background-color: #ffffff;
+            position: fixed; width: 100%; height: 100%; top:0; left:0; 
+            background: linear-gradient(135deg, var(--racing-green-dark), var(--bg-green));
             z-index: 9999; display: flex; justify-content: center; align-items: center;
             transition: opacity 0.5s ease-out;
         }
         .loader-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .loading-logo { width: 150px; }
-        .loading-text { color: var(--racing-green); font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-        .progress-bar-container { width: 250px; height: 8px; background-color: #e0e0e0; border-radius: 4px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background-color: var(--racing-green); border-radius: 4px; transition: width 0.4s ease-out; }
+        .loading-logo { width: 150px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+        .loading-text { 
+            color: var(--accent-yellow); font-weight: 700; font-size: 1.1rem; 
+            text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .progress-bar-container { 
+            width: 280px; height: 10px; 
+            background: rgba(255,255,255,0.2); 
+            border-radius: 5px; overflow: hidden; 
+            backdrop-filter: blur(10px);
+        }
+        .progress-bar { 
+            width: 0%; height: 100%; 
+            background: linear-gradient(90deg, var(--racing-green), var(--border-green));
+            border-radius: 5px; transition: width 0.4s ease-out;
+            box-shadow: 0 0 20px var(--racing-green);
+        }
         
         #main-content { opacity: 0; display: none; transition: opacity 0.5s ease-in; font-family: 'Montserrat', sans-serif; }
         
+        /* --- LANDING PAGE VERDE --- */
         .landing-page {
             display: flex; flex-direction: column; justify-content: center;
-            align-items: center; min-height: calc(100vh - 81px); /* Ajustado al padding-top del body */
+            align-items: center; min-height: calc(100vh - 81px);
             padding: 40px 20px;
-            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://s2.sportstatics.com/relevo/www/multimedia/202405/19/media/cortadas/racing-santander-grada-RLcuKUgpNp33IYwYCUXR2YO-1200x648@Relevo.jpg');
+            background: linear-gradient(rgba(10,74,46,0.85), rgba(0,107,63,0.9)), 
+                        url('https://s2.sportstatics.com/relevo/www/multimedia/202405/19/media/cortadas/racing-santander-grada-RLcuKUgpNp33IYwYCUXR2YO-1200x648@Relevo.jpg');
             background-size: cover; background-position: center; text-align: center;
             gap: 40px;
         }
         .landing-header { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .landing-header .main-logo { width: 120px; }
-        .landing-header h1 { font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0px 4px 10px rgba(0,0,0,0.6); }
-        .landing-header .subtitle { color: var(--racing-green); font-size: 1.3rem; font-weight: 700; text-shadow: 0px 2px 5px rgba(0,0,0,0.5); }
+        .landing-header .main-logo { width: 120px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+        .landing-header h1 { 
+            font-size: 3.5rem; font-weight: 900; text-transform: uppercase; 
+            letter-spacing: 3px; margin: 0; 
+            background: linear-gradient(45deg, var(--white), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(243,202,32,0.4);
+        }
+        .landing-header .subtitle { 
+            color: var(--accent-yellow); font-size: 1.4rem; font-weight: 700; 
+            text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+        }
         
         .landing-nav {
             display: flex; flex-direction: column; gap: 25px;
@@ -204,56 +235,91 @@
             gap: 25px; width: 100%; flex-wrap: wrap; 
         }
         .nav-box {
-            background-color: rgba(0, 107, 63, 0.2); border: 2px solid var(--racing-green);
-            min-height: 120px; padding: 20px 40px; font-weight: 900;
-            text-transform: uppercase;
-            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(4px); display: flex; flex-direction: column;
+            background: linear-gradient(145deg, rgba(26,92,63,0.9), rgba(0,107,63,0.8));
+            border: 3px solid var(--border-green);
+            min-height: 130px; padding: 25px 45px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px); display: flex; flex-direction: column;
             justify-content: center; align-items: center;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
         }
-        .nav-box:hover { transform: translateY(-5px); background-color: var(--racing-green); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .box-title { font-size: 1.8rem; }
+        .nav-box::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        .nav-box:hover::before { left: 100%; }
+        .nav-box:hover { 
+            transform: translateY(-8px) scale(1.05); 
+            background: linear-gradient(145deg, var(--racing-green), var(--border-green));
+            box-shadow: 0 20px 50px rgba(0,107,63,0.6);
+            border-color: var(--accent-yellow);
+        }
+        .box-title { 
+            font-size: 1.6rem; 
+            background: linear-gradient(45deg, var(--white), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
         .box-subtitle {
-            font-size: 0.8rem; font-weight: 500;
-            text-transform: none; opacity: 0.8; margin-top: 5px;
+            font-size: 0.85rem; font-weight: 600;
+            color: var(--text-light); margin-top: 8px;
+            text-transform: none;
         }
 
-        .landing-footer { margin-top: auto; padding-top: 20px; }
-        .landing-footer p { font-size: 0.9rem; margin-bottom: 10px; }
-        .partner-logo { width: 150px; }
+        .landing-footer { margin-top: auto; padding-top: 30px; }
+        .landing-footer p { 
+            font-size: 1rem; margin-bottom: 15px; 
+            color: var(--text-light);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .partner-logo { 
+            width: 160px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+            opacity: 0.9;
+        }
 
         .main-footer {
-            background-color: #111;
-            color: #aaa;
+            background: linear-gradient(180deg, var(--racing-green-dark), var(--bg-green));
+            color: var(--text-light);
             text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
+            padding: 30px;
+            font-size: 1rem;
+            border-top: 4px solid var(--border-green);
         }
         
         @media (max-width: 768px) {
             .header-container { padding: 0 20px; }
-            .landing-header h1 { font-size: 2.2rem; }
-            .landing-header .subtitle { font-size: 1.1rem; }
+            .landing-header h1 { font-size: 2.5rem; }
+            .landing-header .subtitle { font-size: 1.2rem; }
             .nav-row { flex-direction: column; align-items: center; gap: 20px; }
-            .nav-box { padding: 15px 30px; width: 80%; min-height: auto; }
-            .box-title { font-size: 1.5rem; }
+            .nav-box { 
+                padding: 20px 35px; width: 85%; min-height: 110px; 
+            }
+            .box-title { font-size: 1.4rem; }
+            .box-subtitle { font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
   
-    <!-- NAVEGACIÓN DEL PRIMER CÓDIGO -->
+    <!-- NAVEGACIÓN VERDE -->
     <header class="main-header" id="main-header">
         <div class="header-container">
             <a href="./index.html" class="logo-link">
-                <img src="./img/logo.png" alt="Logo de la Empresa" class="logo">
+                <img src="./img/logo.png" alt="Logo Real Racing Club" class="logo">
             </a>
             <nav class="main-nav">
                 <ul class="nav-links">
                     <li><a href="./index.html">Inicio</a></li>
                     <li><a href="./plantilla.html">Plantillas</a></li>
                     <li><a href="./historia.html">Historia</a></li>
-                    <li><a href="./entradas.html">Entradas</a></li>
+                    <li class="active"><a href="./entradas.html">Entradas</a></li>
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle">
                             Clubes <i class="fas fa-chevron-down"></i>
@@ -272,33 +338,33 @@
     </header>
   
     <div class="mobile-nav-overlay">
-      <div class="mobile-nav-header">
-          <a href="./index.html" class="logo-link">
-              <img src="./img/logo.png" alt="Logo de la Empresa" class="logo">
-          </a>
-          <button class="close-menu" aria-label="Cerrar menú">×</button>
-      </div>
-      <nav class="mobile-nav-links">
-          <ul>
-            <li><a href="./index.html">Inicio</a></li>
-            <li><a href="./plantilla.html">Plantillas</a></li>
-            <li><a href="./historia.html">Historia</a></li>
-            <li><a href="./entradas.html">Entradas</a></li>
-            <li class="mobile-dropdown">
-                <a href="#" class="dropdown-toggle">
-                    <span>Clubes</span>
-                    <i class="fas fa-chevron-down"></i>
-                </a>
-                <ul class="mobile-dropdown-content">
-                    <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion</a></li>
-                    <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
-                </ul>
-            </li>
-          </ul>
-      </nav>
+     <div class="mobile-nav-header">
+      <a href="./index.html" class="logo-link">
+          <img src="./img/logo.png" alt="Logo Real Racing Club" class="logo">
+      </a>
+      <button class="close-menu" aria-label="Cerrar menú">×</button>
+     </div>
+     <nav class="mobile-nav-links">
+      <ul>
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./plantilla.html">Plantillas</a></li>
+        <li><a href="./historia.html">Historia</a></li>
+        <li class="active"><a href="./entradas.html">Entradas</a></li>
+        <li class="mobile-dropdown">
+            <a href="#" class="dropdown-toggle">
+                <span>Clubes</span>
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="mobile-dropdown-content">
+                <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion</a></li>
+                <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
+            </ul>
+        </li>
+      </ul>
+     </nav>
     </div>
 
-    <!-- PANTALLA DE CARGA DEL SEGUNDO CÓDIGO -->
+    <!-- LOADER VERDE -->
     <div id="ticket-loader">
         <div class="loader-content">
             <img src="./img/logo.png" alt="Cargando..." class="loading-logo">
@@ -307,11 +373,11 @@
         </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL DEL SEGUNDO CÓDIGO -->
+    <!-- CONTENIDO PRINCIPAL VERDE -->
     <main id="main-content">
         <div class="landing-page">
             <header class="landing-header">
-                <img src="img/logo.png" alt="Logo del Club" class="main-logo">
+                <img src="./img/logo.png" alt="Logo del Club" class="main-logo">
                 <h1>Real Racing Club</h1>
                 <p class="subtitle">Venta oficial de entradas</p>
             </header>
@@ -322,7 +388,8 @@
                         <span class="box-title">Portal de Abonado</span>
                     </a>
                     <a href="https://youtu.be/6CSMRM-iyDo?si=mHl_qXGk8oQuLadd" target="_blank" rel="noopener noreferrer" class="nav-box">
-                        <span class="box-title">video 360 campos</span>
+                        <span class="box-title">Video 360°</span>
+                        <span class="box-subtitle">Campos de Fútbol</span>
                     </a>
                 </div>
                 <div class="nav-row">
@@ -332,7 +399,7 @@
                     </a>
                     <a href="https://tienda.realracingclub.es/" target="_blank" rel="noopener noreferrer" class="nav-box">
                         <span class="box-title">Tienda Oficial</span>
-                        <span class="box-subtitle">Equipaciones y Merchandising</span>
+                        <span class="box-subtitle">Equipaciones y merchandising</span>
                     </a>
                 </div>
             </nav>
@@ -343,7 +410,7 @@
         </div>
     </main>
     
-    <!-- PIE DE PÁGINA DEL SEGUNDO CÓDIGO -->
+    <!-- FOOTER VERDE -->
     <footer class="main-footer">
         <p>© 2025 | Real Racing Club de Santander. Todos los derechos reservados.</p>
     </footer>
@@ -352,7 +419,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const body = document.body;
 
-        // --- LÓGICA DE LA NAVEGACIÓN (DEL PRIMER CÓDIGO) ---
+        // NAVEGACIÓN
         const hamburgerBtn = document.querySelector('.hamburger-menu');
         const closeBtn = document.querySelector('.close-menu');
         const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
@@ -389,7 +456,7 @@
             }, { passive: true });
         }
 
-        // --- LÓGICA DE LA PANTALLA DE CARGA (DEL SEGUNDO CÓDIGO) ---
+        // LOADER
         const loader = document.getElementById('ticket-loader');
         const mainContent = document.getElementById('main-content');
         const progressBar = document.querySelector('.progress-bar');
@@ -408,20 +475,16 @@
             }, 300);
         }, 1200);
 
-        // --- LÓGICA DE TRANSICIÓN DE PÁGINA (ADAPTADA) ---
-        // Se seleccionan los enlaces de la NUEVA navegación
+        // TRANSICIÓN PÁGINAS
         const allNavLinks = document.querySelectorAll('.main-nav a, .mobile-nav-links a, .logo-link');
         allNavLinks.forEach(link => {
             link.addEventListener('click', function(event) {
-                // No aplicar fade-out para desplegables o enlaces en nueva pestaña
                 if (this.classList.contains('dropdown-toggle') || this.target === '_blank') {
                     return;
                 }
-                // Si el menú móvil está abierto, lo cierra al hacer clic en un enlace normal
                 if (mobileNavOverlay.classList.contains('is-open')) {
                     closeNav();
                 }
-
                 event.preventDefault(); 
                 const destination = this.href;
                 body.classList.add('fade-out');
