@@ -4,224 +4,449 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Plantilla Racing de Santander 2025/26</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" type="image/png" href="./img/logo.png">
-  
+
   <style>
-    /* === VARIABLES CSS GLOBALES === */
     :root {
-        --racing-green: #006B3F;
-        --accent-yellow: #f3ca20;
-        --bg-dark: #121212;
-        --bg-header: #005230; 
-        --white: #ffffff;
-        --border-color: #2a2a2a;
-        --card-bg: #f0f2f5; 
+      --racing-green: #006B3F;
+      --accent-yellow: #f3ca20;
+      --bg-dark: #121212;
+      --bg-header: #005230;
+      --white: #ffffff;
+      --border-color: #2a2a2a;
+      --card-bg: #f0f2f5;
     }
 
-    /* === ESTILOS GENERALES === */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-        margin: 0; 
-        padding-top: 81px; 
-        font-family: 'Poppins', sans-serif; 
-        background-color: var(--racing-green); 
-        color: var(--white); 
+
+    body {
+      margin: 0;
+      padding-top: 81px;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--racing-green);
+      color: var(--white);
     }
+
     body.mobile-nav-open,
     body.modal-open { overflow: hidden; }
+
     a { color: inherit; text-decoration: none; }
     ul { list-style: none; }
 
-    /* --- HEADER Y NAVEGACIÓN --- */
-    .main-header { 
-        position: fixed; 
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        padding: 15px 0; 
-        background-color: var(--bg-header);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* === HEADER === */
+    .main-header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 15px 0;
+      background-color: var(--bg-header);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     .header-container {
-        width: 100%;
-        padding: 0 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .logo { height: 50px; transition: transform 0.3s ease; }
-    .logo-link:hover .logo { transform: scale(1.05); }
-    .main-nav { display: none; }
-    .main-nav .nav-links { display: flex; gap: 40px; align-items: center; }
+
+    .logo {
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-link:hover .logo {
+      transform: scale(1.05);
+    }
+
+    .main-nav {
+      display: none;
+    }
+
+    .main-nav .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
     .main-nav a {
-        color: var(--white); font-weight: 700; text-transform: uppercase; font-size: 0.9rem;
-        padding: 5px 0; position: relative; transition: color 0.3s;
+      color: var(--white);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      padding: 5px 0;
+      position: relative;
+      transition: color 0.3s;
     }
+
     .main-nav a::after {
-        content: ''; position: absolute; width: 0; height: 3px;
-        background: var(--accent-yellow); bottom: -5px; left: 50%;
-        transform: translateX(-50%); transition: width 0.4s ease;
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      background: var(--accent-yellow);
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: width 0.4s ease;
     }
-    .main-nav a:hover { color: var(--accent-yellow); }
-    .main-nav a:hover::after { width: 100%; }
-    
+
+    .main-nav a:hover {
+      color: var(--accent-yellow);
+    }
+
+    .main-nav a:hover::after {
+      width: 100%;
+    }
+
     .dropdown { position: relative; }
     .dropdown-toggle { cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
     .dropdown-menu {
-        position: absolute; top: 150%; left: 0; background-color: var(--bg-header);
-        padding: 10px 0; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-        min-width: 240px; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      position: absolute;
+      top: 150%; left: 0;
+      background-color: var(--bg-header);
+      padding: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      min-width: 240px;
+      opacity: 0; visibility: hidden;
+      transition: all 0.3s ease;
     }
-    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; top: 100%; }
-    .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; }
-    .dropdown-header { padding: 12px 20px; font-weight: 800; color: var(--accent-yellow); font-size: 0.9rem; text-transform: uppercase; }
 
-    .hamburger-menu { display: flex; background: none; border: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+    .dropdown:hover .dropdown-menu {
+      opacity: 1; visibility: visible; top: 100%;
+    }
 
-    /* --- MOBILE NAV --- */
+    .dropdown-menu li a {
+      display: block;
+      padding: 12px 20px;
+      font-size: 0.85rem;
+    }
+
+    .dropdown-header {
+      padding: 12px 20px;
+      font-weight: 800;
+      color: var(--accent-yellow);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .hamburger-menu {
+      display: flex;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    /* === MOBILE NAV === */
     .mobile-nav-overlay {
-        position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
-        background-color: var(--bg-header); z-index: 1001; transition: right 0.4s ease;
+      position: fixed;
+      top: 0; right: -100%;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background-color: var(--bg-header);
+      z-index: 1001;
+      transition: right 0.4s ease;
     }
+
     .mobile-nav-overlay.is-open { right: 0; }
-    .mobile-nav-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-    .close-menu { font-size: 2.5rem; color: var(--white); background: none; border: none; cursor: pointer; }
-    .mobile-nav-links a { display: block; padding: 20px 25px; font-weight: 700; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 
-    /* --- PLANTILLA --- */
-    main { padding-top: 30px; font-family: 'Montserrat', sans-serif; }
-    .page-title-plantilla { text-align: center; padding: 10px 15px 30px; }
-    .page-title-plantilla h1 { font-size: 2.5em; font-weight: 900; }
-    section { max-width: 1200px; margin: 50px auto; padding: 0 15px; }
-    section h3 { color: #ffffff; margin-bottom: 25px; font-size: 1.8em; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 10px; }
-    
-    .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+    .mobile-nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .close-menu {
+      font-size: 2.5rem;
+      color: var(--white);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mobile-nav-links a {
+      display: block;
+      padding: 20px 25px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-transform: uppercase;
+    }
+
+    /* === MAIN / PLANTILLA === */
+    main {
+      padding-top: 30px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .page-title-plantilla {
+      text-align: center;
+      padding: 10px 15px 30px;
+    }
+
+    .page-title-plantilla h1 {
+      font-size: 2.5em;
+      font-weight: 900;
+    }
+
+    .page-title-plantilla h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #e5e5e5;
+      margin-top: 5px;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 15px;
+    }
+
+    section h3 {
+      color: #ffffff;
+      margin-bottom: 25px;
+      font-size: 1.8em;
+      border-bottom: 2px solid var(--accent-yellow);
+      padding-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .player-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      align-items: stretch;
+    }
+
+    /* ✅ TODAS LAS TARJETAS PERFECTAMENTE IGUALES */
     .player-card {
-        background-color: var(--card-bg); border-radius: 12px; overflow: hidden;
-        position: relative; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        transition: transform 0.3s ease; cursor: pointer;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 360px;
+      justify-content: space-between;
     }
+
     .player-card:hover { transform: translateY(-5px); }
-    
-    /* Dorsales Grandes */
-    .player-number { 
-        position: absolute; 
-        top: 10px; 
-        left: 10px; 
-        font-size: 4.5rem; 
-        font-weight: 900; 
-        color: #3d3d3d; 
-        opacity: 0.15; 
-        z-index: 1; 
-        line-height: 1;
-        text-align: left;
-    }
-    
-    /* Ajuste para que "Por definir" ocupe el mismo espacio que un número */
-    .player-number.status-text { 
-        font-size: 1.5rem; 
-        top: 25px; 
-        max-width: 100px;
-        text-transform: uppercase;
+
+    .player-number {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: #3d3d3d;
+      opacity: 0.15;
+      z-index: 1;
+      line-height: 1;
+      text-align: left;
     }
 
-    /* UNIFORMIDAD DE IMÁGENES: Espacio grande para todos */
-    .player-image { 
-        position: relative; 
-        padding-top: 20px; 
-        z-index: 2; 
-        height: 300px; /* Incrementado para que sean más grandes */
-        display: flex; 
-        align-items: flex-end; 
-        justify-content: center; 
-    }
-    .player-image img { 
-        height: 100%; 
-        width: auto; 
-        max-width: 100%; 
-        object-fit: contain; 
-        filter: drop-shadow(2px 5px 10px rgba(0,0,0,0.4)); 
+    .player-image {
+      flex: 1;
+      position: relative;
+      padding-top: 20px;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: linear-gradient(to top, #d8dde3, transparent);
     }
 
-    .player-info { background-color: var(--racing-green); color: var(--white); padding: 15px; position: relative; z-index: 2; }
-    .player-info .position { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; opacity: 0.8; }
-    .player-info .name { font-size: 1.15rem; font-weight: 700; text-transform: uppercase; }
+    .player-image img {
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      filter: drop-shadow(2px 5px 10px rgba(0,0,0,0.4));
+    }
 
-    footer { text-align: center; padding: 20px; background-color: #005230; margin-top: 30px; font-size: 0.8em; }
+    .player-info {
+      background-color: var(--racing-green);
+      color: var(--white);
+      padding: 12px 10px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 80px;
+    }
 
-    /* --- MODAL --- */
+    .player-info .position {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+
+    .player-info .name {
+      font-size: 1.0rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-top: auto;
+      min-height: 2.4em;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-top: 2px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #005230;
+      margin-top: 30px;
+      font-size: 0.8em;
+    }
+
+    /* === MODAL === */
     .player-modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
-        z-index: 2000; display: flex; justify-content: center; align-items: center;
-        opacity: 0; visibility: hidden; transition: 0.3s;
-    }
-    .player-modal-overlay.active { opacity: 1; visibility: visible; }
-    .player-modal-content {
-        background: var(--white); color: #333; padding: 30px; border-radius: 15px;
-        width: 90%; max-width: 380px; text-align: center; position: relative;
-    }
-    .close-modal-btn { position: absolute; top: 10px; right: 15px; font-size: 2.2rem; cursor: pointer; color: #aaa; }
-    
-    #modalPlayerImage { 
-        width: 180px; 
-        height: 180px; 
-        border-radius: 50%; 
-        border: 5px solid var(--racing-green); 
-        object-fit: cover; 
-        object-position: top; 
-        margin-bottom: 15px; 
-        background-color: var(--card-bg);
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
     }
 
-    @media (min-width: 993px) { .main-nav { display: flex; } .hamburger-menu { display: none; } }
+    .player-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .player-modal-content {
+      background: var(--white);
+      color: #333;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 380px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 2.2rem;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    #modalPlayerImage {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 5px solid var(--racing-green);
+      object-fit: cover;
+      object-position: top;
+      margin-bottom: 15px;
+      background-color: var(--card-bg);
+    }
+
+    #modalPlayerName {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    #modalPlayerPosition {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 993px) {
+      .main-nav { display: flex; }
+      .hamburger-menu { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .player-card {
+        height: 340px;
+      }
+      .player-info {
+        height: 70px;
+      }
+      .player-number {
+        font-size: 3.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-  
+
   <header class="main-header">
-      <div class="header-container">
-          <a href="./index.html" class="logo-link">
-              <img src="./img/logo.png" alt="Logo" class="logo">
-          </a>
-          <nav class="main-nav">
-              <ul class="nav-links">
-                  <li><a href="./index.html">Inicio</a></li>
-                  <li><a href="./plantilla.html">Plantillas</a></li>
-                  <li><a href="./historia.html">Historia</a></li>
-                  <li><a href="./entradas.html">Entradas</a></li>
-                  <li class="dropdown">
-                      <a href="javascript:void(0);" class="dropdown-toggle">Clubes <i class="fas fa-chevron-down"></i></a>
-                      <ul class="dropdown-menu">
-                          <li><p class="dropdown-header">Competición</p></li>
-                          <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">LaLiga Hypermotion</a></li>
-                      </ul>
-                  </li>
-              </ul>
-          </nav>
-          <button class="hamburger-menu"><i class="fas fa-bars"></i></button>
-      </div>
-  </header>
-  
-  <div class="mobile-nav-overlay">
-    <div class="mobile-nav-header">
+    <div class="header-container">
+      <a href="./index.html" class="logo-link">
         <img src="./img/logo.png" alt="Logo" class="logo">
-        <button class="close-menu">×</button>
-    </div>
-    <nav class="mobile-nav-links">
-        <ul>
+      </a>
+      <nav class="main-nav">
+        <ul class="nav-links">
           <li><a href="./index.html">Inicio</a></li>
           <li><a href="./plantilla.html">Plantillas</a></li>
           <li><a href="./historia.html">Historia</a></li>
           <li><a href="./entradas.html">Entradas</a></li>
+          <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle">Clubes <i class="fas fa-chevron-down"></i></a>
+            <ul class="dropdown-menu">
+              <li><p class="dropdown-header">Competición</p></li>
+              <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">LaLiga Hypermotion</a></li>
+            </ul>
+          </li>
         </ul>
+      </nav>
+      <button class="hamburger-menu" aria-label="Abrir menú">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav-overlay">
+    <div class="mobile-nav-header">
+      <img src="./img/logo.png" alt="Logo" class="logo">
+      <button class="close-menu" aria-label="Cerrar menú">×</button>
+    </div>
+    <nav class="mobile-nav-links">
+      <ul>
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./plantilla.html">Plantillas</a></li>
+        <li><a href="./historia.html">Historia</a></li>
+        <li><a href="./entradas.html">Entradas</a></li>
+      </ul>
     </nav>
   </div>
 
@@ -231,7 +456,8 @@
       <h2>Datos actualizados en junio de 2025</h2>
     </div>
 
-    <section id="porteros">
+    <!-- PORTEROS -->
+<section id="porteros">
       <h3>Porteros</h3>
       <div class="player-grid">
         <div class="player-card" data-nationality="Española">
@@ -243,214 +469,354 @@
             <div class="position">Portero</div>
             <div class="name">Jokin Ezkieta</div>
           </div>
- 
-       <!-- <div class="player-grid">
-        <div class="player-card" data-nationality="Sueco">
-          <div class="player-number">1</div>
+        </div>
+
+        <div class="player-card" data-nationality="Sueca">
+          <div class="player-number">13</div>
           <div class="player-image">
-            <img src="./img/s" alt="Simon Eriksson">
+            <img src="./img/simon.png" alt="Parera">
           </div>
           <div class="player-info">
             <div class="position">Portero</div>
-            <div class="name">Jokin Ezkieta</div>
+            <div class="name">Simon Eriksson</div>
           </div>
         </div>
-        </div>
-      </div> -->
+      </div>
     </section>
-
+    <!-- DEFENSAS -->
     <section id="defensas">
-        <h3>Defensas</h3>
-        <div class="player-grid">
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">2</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p500285/512x512/p500285_t189_2024_1_003_000.png" alt="Mantilla"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Álvaro Mantilla</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">4</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p179372/512x512/p179372_t189_2024_1_003_000.png" alt="Manu Hernando"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Manu Hernando</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">5</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p500810/512x512/p500810_t189_2024_1_003_000.png" alt="Javi Castro"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Javi Castro</div></div>
-            </div>
-            <div class="player-card" data-nationality="Francesa">
-                <div class="player-number">17</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p229605/512x512/p229605_t189_2024_1_003_000.png" alt="Michelin"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Clément Michelin</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">23</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p591409/512x512/p591409_t189_2024_1_003_000.png" alt="Mario García"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Mario García</div></div>
-            </div>
-            <div class="player-card" data-nationality="Mexicana">
-                <div class="player-number">32</div>
-                <div class="player-image"><img src="./img/salinas.png" alt="Salinas"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Jorge Salinas</div></div>
-            </div>
-            <div class="player-card" data-nationality="Uruguayo">
-                <div class="player-number">16</div>
-                <div class="player-image"><img src="./img/Facu.webp" alt="Facu"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Facu</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">21</div>
-                <div class="player-image"><img src="./img/Pablo Ramón.webp" alt="Pablo Ramón"></div>
-                <div class="player-info"><div class="position">Defensa</div><div class="name">Pablo Ramón</div></div>
-            </div>
+      <h3>Defensas</h3>
+      <div class="player-grid">
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">2</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p500285/512x512/p500285_t189_2024_1_003_000.png" alt="Mantilla">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Álvaro Mantilla</div>
+          </div>
         </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">4</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p179372/512x512/p179372_t189_2024_1_003_000.png" alt="Manu Hernando">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Manu Hernando</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">5</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p500810/512x512/p500810_t189_2024_1_003_000.png" alt="Javi Castro">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Javi Castro</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Francesa">
+          <div class="player-number">17</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p229605/512x512/p229605_t189_2024_1_003_000.png" alt="Michelin">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Clément Michelin</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">23</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p591409/512x512/p591409_t189_2024_1_003_000.png" alt="Mario García">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Mario García</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Mexicana">
+          <div class="player-number">32</div>
+          <div class="player-image">
+            <img src="./img/salinas.png" alt="Salinas">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Jorge Salinas</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Uruguaya">
+          <div class="player-number">16</div>
+          <div class="player-image">
+            <img src="./img/Facu.webp" alt="Facu">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Facu González</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">21</div>
+          <div class="player-image">
+            <img src="./img/Pablo Ramón.webp" alt="Pablo Ramón">
+          </div>
+          <div class="player-info">
+            <div class="position">Defensa</div>
+            <div class="name">Pablo Ramón</div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- MEDIOS -->
     <section id="medios">
-        <h3>Centrocampistas</h3>
-        <div class="player-grid">
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">6</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p464168/512x512/p464168_t189_2024_1_003_000.png" alt="Sainz-Maza"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Íñigo Sainz-Maza</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">8</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p513947/512x512/p513947_t189_2024_1_003_000.png" alt="Aldasoro"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Aritz Aldasoro</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">10</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p242833/512x512/p242833_t189_2024_1_003_000.png" alt="Vicente"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Íñigo Vicente</div></div>
-            </div>
-            <div class="player-card" data-nationality="Senegalesa">
-                <div class="player-number">14</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p572069/512x512/p572069_t189_2024_1_003_000.png" alt="Gueye"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Maguette Gueye</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">15</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p169070/512x512/p169070_t189_2024_1_003_000.png" alt="Sangalli"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Marco Sangalli</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">18</div>
-                <div class="player-image"><img src="./img/peio.png" alt="Canales"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Peio Canales</div></div>
-            </div>
-            <div class="player-card" data-nationality="Colombiana">
-                <div class="player-number">19</div>
-                <div class="player-image"><img src="./img/G.Puertas.webp" alt="Puerta"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name"> Gustavo Puerta</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">23</div>
-                <div class="player-image"><img src="./img/Damián.webp" alt="Damian"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Damian Rodriguez</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">16</div>
-                <div class="player-image"><img src="./img/Sergio.webp" alt="Sergio"></div>
-                <div class="player-info"><div class="position">Centrocampista</div><div class="name">Sergio</div></div>
-            </div>
+      <h3>Centrocampistas</h3>
+      <div class="player-grid">
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">6</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p464168/512x512/p464168_t189_2024_1_003_000.png" alt="Sainz-Maza">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Íñigo Sainz-Maza</div>
+          </div>
         </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">8</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p513947/512x512/p513947_t189_2024_1_003_000.png" alt="Aldasoro">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Aritz Aldasoro</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">10</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p242833/512x512/p242833_t189_2024_1_003_000.png" alt="Vicente">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Íñigo Vicente</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Senegalesa">
+          <div class="player-number">14</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p572069/512x512/p572069_t189_2024_1_003_000.png" alt="Gueye">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Maguette Gueye</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">15</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p169070/512x512/p169070_t189_2024_1_003_000.png" alt="Sangalli">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Marco Sangalli</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">18</div>
+          <div class="player-image">
+            <img src="./img/peio.png" alt="Peio Canales">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Peio Canales</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Colombiana">
+          <div class="player-number">19</div>
+          <div class="player-image">
+            <img src="./img/G.Puertas.webp" alt="Puerta">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Gustavo Puerta</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">23</div>
+          <div class="player-image">
+            <img src="./img/Damián.webp" alt="Damian">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Damian Rodriguez</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">36</div>
+          <div class="player-image">
+            <img src="./img/Sergio.webp" alt="Sergio">
+          </div>
+          <div class="player-info">
+            <div class="position">Centrocampista</div>
+            <div class="name">Sergio Martínez</div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- DELANTEROS - COMPLETO -->
     <section id="delanteros">
-        <h3>Delanteros</h3>
-        <div class="player-grid">
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">9</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p553751/512x512/p553751_t189_2024_1_003_000.png" alt="Arana"></div>
-                <div class="player-info"><div class="position">Delantero</div><div class="name">Juan Carlos Arana</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">11</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p444284/512x512/p444284_t189_2024_1_003_000.png" alt="Andrés Martín"></div>
-                <div class="player-info"><div class="position">Delantero</div><div class="name">Andrés Martín</div></div>
-            </div>
-            <div class="player-card" data-nationality="Senegalesa">
-                <div class="player-number">20</div>
-                <div class="player-image"><img src="https://assets.laliga.com/squad/2024/t189/p517334/512x512/p517334_t189_2024_1_003_000.png" alt="Camara"></div>
-                <div class="player-info"><div class="position">Delantero</div><div class="name">Suleiman Camara</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">22</div>
-                <div class="player-image"><img src="img/asier.png" alt="Villalibre"></div>
-                <div class="player-info"><div class="position">Delantero</div><div class="name">Asier Villalibre</div></div>
-            </div>
-            <div class="player-card" data-nationality="Georgiana">
-                <div class="player-number">7</div>
-                <div class="player-image"><img src="./img/Guliashvili.webp" alt="Guliashvili"></div>
-                <div class="player-info"><div class="position">Delantero</div><div class="name">GULIASHVILI</div></div>
-            </div>
-            <div class="player-card" data-nationality="Española">
-                <div class="player-number">27</div>
-                <div class="player-image"><img src="./img/manex.webp" alt="Manex"></div>
-                <div class="player-info"><div class="position">Delantero</div><div class="name">Manex Lozano</div></div>
-            </div>
+      <h3>Delanteros</h3>
+      <div class="player-grid">
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">9</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p553751/512x512/p553751_t189_2024_1_003_000.png" alt="Arana">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Juan Carlos Arana</div>
+          </div>
         </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">11</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p444284/512x512/p444284_t189_2024_1_003_000.png" alt="Andrés Martín">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Andrés Martín</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Senegalesa">
+          <div class="player-number">20</div>
+          <div class="player-image">
+            <img src="https://assets.laliga.com/squad/2024/t189/p517334/512x512/p517334_t189_2024_1_003_000.png" alt="Camara">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Suleiman Camara</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">22</div>
+          <div class="player-image">
+            <img src="img/asier.png" alt="Villalibre">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Asier Villalibre</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Georgiana">
+          <div class="player-number">7</div>
+          <div class="player-image">
+            <img src="./img/Guliashvili.webp" alt="Guliashvili">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Giorgi Guliashvili</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">27</div>
+          <div class="player-image">
+            <img src="./img/manex.webp" alt="Manex">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Manex Lozano</div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
-  
+
   <footer>
     <p>Racing de Santander © Temporada 2025/26 – Actualizado en junio de 2025</p>
   </footer>
 
   <div class="player-modal-overlay" id="playerModal">
     <div class="player-modal-content">
-        <span class="close-modal-btn">×</span>
-        <img src="" alt="Foto" id="modalPlayerImage">
-        <h3 id="modalPlayerName"></h3>
-        <p id="modalPlayerPosition"></p>
-        <div class="modal-nationality-info">
-            <span style="display:block; font-size: 0.8rem; font-weight:600; color:#666;">NACIONALIDAD</span>
-            <p id="modalPlayerNationality" style="font-weight:700;"></p>
-        </div>
+      <span class="close-modal-btn">×</span>
+      <img src="" alt="Foto del jugador" id="modalPlayerImage">
+      <h3 id="modalPlayerName"></h3>
+      <p id="modalPlayerPosition"></p>
+      <div class="modal-nationality-info">
+        <span style="display:block; font-size: 0.8rem; font-weight:600; color:#666;">NACIONALIDAD</span>
+        <p id="modalPlayerNationality" style="font-weight:700;"></p>
+      </div>
     </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const body = document.body;
-        const hamburgerBtn = document.querySelector('.hamburger-menu');
-        const closeBtn = document.querySelector('.close-menu');
-        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+      const body = document.body;
+      const hamburgerBtn = document.querySelector('.hamburger-menu');
+      const closeBtn = document.querySelector('.close-menu');
+      const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
 
-        hamburgerBtn.addEventListener('click', () => {
-            mobileNavOverlay.classList.add('is-open');
-            body.classList.add('mobile-nav-open');
+      hamburgerBtn.addEventListener('click', () => {
+        mobileNavOverlay.classList.add('is-open');
+        body.classList.add('mobile-nav-open');
+      });
+
+      closeBtn.addEventListener('click', () => {
+        mobileNavOverlay.classList.remove('is-open');
+        body.classList.remove('mobile-nav-open');
+      });
+
+      const modal = document.getElementById('playerModal');
+      const modalImage = document.getElementById('modalPlayerImage');
+      const modalName = document.getElementById('modalPlayerName');
+      const modalPosition = document.getElementById('modalPlayerPosition');
+      const modalNationality = document.getElementById('modalPlayerNationality');
+
+      document.querySelectorAll('.player-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const img = card.querySelector('.player-image img');
+          modalImage.src = img ? img.src : '';
+          modalName.textContent = card.querySelector('.name').textContent;
+          modalPosition.textContent = card.querySelector('.position').textContent;
+          modalNationality.textContent = card.dataset.nationality || 'Desconocida';
+          modal.classList.add('active');
+          body.classList.add('modal-open');
         });
+      });
 
-        closeBtn.addEventListener('click', () => {
-            mobileNavOverlay.classList.remove('is-open');
-            body.classList.remove('mobile-nav-open');
-        });
-
-        const modal = document.getElementById('playerModal');
-        const modalImage = document.getElementById('modalPlayerImage');
-        const modalName = document.getElementById('modalPlayerName');
-        const modalPosition = document.getElementById('modalPlayerPosition');
-        const modalNationality = document.getElementById('modalPlayerNationality');
-
-        document.querySelectorAll('.player-card').forEach(card => {
-            card.addEventListener('click', () => {
-                modalImage.src = card.querySelector('img').src;
-                modalName.textContent = card.querySelector('.name').textContent;
-                modalPosition.textContent = card.querySelector('.position').textContent;
-                modalNationality.textContent = card.dataset.nationality;
-                modal.classList.add('active');
-                body.classList.add('modal-open');
-            });
-        });
-
-        modal.addEventListener('click', (e) => {
-            if(e.target.classList.contains('player-modal-overlay') || e.target.classList.contains('close-modal-btn')) {
-                modal.classList.remove('active');
-                body.classList.remove('modal-open');
-            }
-        });
+      modal.addEventListener('click', (e) => {
+        if (
+          e.target.classList.contains('player-modal-overlay') ||
+          e.target.classList.contains('close-modal-btn')
+        ) {
+          modal.classList.remove('active');
+          body.classList.remove('modal-open');
+        }
+      });
     });
   </script>
-</body> 
+</body>
 </html>
