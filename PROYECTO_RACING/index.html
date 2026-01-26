@@ -66,11 +66,13 @@
         }
         .loading-subtext {
             font-size: 4rem; font-weight: 900;
-            color: var(--racing-green-light); /* RRC en verde */
+            color: #ffffff; /* BLANCO BRILLANTE */
             letter-spacing: 3px; margin-top: 5px;
             text-shadow:
-                0 0 8px rgba(0, 133, 82, 0.9),
-                2px 2px 4px rgba(0, 0, 0, 0.9);
+                0 0 15px rgba(0, 134, 82, 1), /* BRILLO VERDE INTENSO */
+                0 0 25px rgba(0, 134, 82, 0.8),
+                2px 2px 8px rgba(0, 0, 0, 1);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
         }
         body.loaded #loading-screen { opacity: 0; visibility: hidden; }
 
@@ -373,6 +375,9 @@
             .carousel-content p {
                 font-size: clamp(0.95rem, 4vw, 1.2rem);
             }
+            .loading-subtext {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
@@ -511,10 +516,10 @@
                 header.classList.toggle('scrolled', window.scrollY > 50);
             });
 
-            // RETRASO DEL LOADING: 2 SEGUNDOS (para que se note pero no desespere)
+            // RETRASO DEL LOADING: 2 SEGUNDOS
             setTimeout(() => {
                 document.body.classList.add('loaded');
-            }, 2000); // 2000 ms = 2 segundos
+            }, 2000);
 
             // CARRUSEL - 5 SEGUNDOS ENTRE SLIDES
             const slides = document.querySelectorAll('.carousel-item');
@@ -546,7 +551,7 @@
 
             function startAutoPlay() {
                 if (isAutoPlaying) {
-                    autoPlayInterval = setInterval(nextSlide, 5000); // 5 segundos
+                    autoPlayInterval = setInterval(nextSlide, 5000);
                 }
             }
 
@@ -587,4 +592,3 @@
     </script>
 </body>
 </html>
-
