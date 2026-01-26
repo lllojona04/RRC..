@@ -173,7 +173,7 @@
         .carousel-item.active { 
             opacity: 1; 
         }
-        
+
         /* CONTENEDOR DE IMAGEN + TEXTO */
         .carousel-slide {
             position: relative;
@@ -183,7 +183,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* IMÁGENES COMPLETAMENTE VISIBLES */
         .bg-image {
             position: absolute;
@@ -196,7 +196,7 @@
             background-repeat: no-repeat;
             z-index: 1;
         }
-        
+
         /* TEXTO PEQUEÑO Y LEGIBLE */
         .carousel-content {
             position: relative;
@@ -228,7 +228,7 @@
         /* TEXTO MÁS PEQUEÑO */
         .carousel-content h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 3rem); /* MÁS PEQUEÑO */
+            font-size: clamp(1.8rem, 4vw, 3rem);
             font-weight: 900;
             color: var(--white) !important;
             text-transform: uppercase;
@@ -240,7 +240,7 @@
         }
 
         .carousel-content p {
-            font-size: clamp(1rem, 2.5vw, 1.3rem); /* MÁS PEQUEÑO */
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             font-weight: 500;
             color: var(--white) !important;
             line-height: 1.5;
@@ -489,8 +489,10 @@
             <div class="footer-col">
                 <h4>Contacto</h4>
                 <p>Estadio El Sardinero<br>C/ Real Racing Club, s/n<br>39005 Santander, Cantabria</p>
-                <p><a href="tel:+34942282828">(+34) 942 28 28 28</a><br>
-                   <a href="mailto:info@realracingclub.es">info@realracingclub.es</a></p>
+                <p>
+                    <a href="tel:+34942282828">(+34) 942 28 28 28</a><br><br>
+                    <a href="mailto:info@realracingclub.es">info@realracingclub.es</a>
+                </p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -502,16 +504,19 @@
         <i class="fas fa-phone"></i>
     </a>
 
-    <!-- JS CARRUSEL - 5 SEGUNDOS -->
+    <!-- JS CARRUSEL + LOADING 5 SEGUNDOS -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('loaded');
-
             // Scroll header
             const header = document.getElementById('main-header');
             window.addEventListener('scroll', () => {
                 header.classList.toggle('scrolled', window.scrollY > 50);
             });
+
+            // RETRASO DEL LOADING: 5 SEGUNDOS
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 5000); // 5000 ms = 5 segundos
 
             // CARRUSEL - 5 SEGUNDOS
             const slides = document.querySelectorAll('.carousel-item');
