@@ -26,7 +26,6 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* === HEADER NUEVO (EL QUE TE DI) === */
     header.main-header {
       position: fixed;
       top: 0;
@@ -171,7 +170,6 @@
       color: var(--accent-yellow);
     }
 
-    /* === MOBILE MENU OVERLAY === */
     .mobile-menu-overlay {
       position: fixed;
       top: 0;
@@ -236,7 +234,6 @@
       .hamburger-menu { display: block; }
     }
 
-    /* === RESTO DEL ESTILO ORIGINAL === */
     body {
       margin: 0;
       padding-top: 90px;
@@ -261,13 +258,6 @@
     .page-title-plantilla h1 {
       font-size: 2.5em;
       font-weight: 900;
-    }
-
-    .page-title-plantilla h2 {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #e5e5e5;
-      margin-top: 5px;
     }
 
     section {
@@ -374,6 +364,31 @@
       padding-top: 2px;
     }
 
+    /* BANDA DIAGONAL TIPO SELLO */
+    .player-ribbon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 180%;
+      height: 40px;
+      background: rgba(243, 202, 32, 0.9); /* var(--accent-yellow) */
+      transform: translate(-50%, -50%) rotate(-35deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .player-ribbon span {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #000;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -382,7 +397,6 @@
       font-size: 0.8em;
     }
 
-    /* MODAL */
     .player-modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -455,7 +469,6 @@
   </style>
 </head>
 <body>
-  <!-- HEADER NUEVO COMPLETO -->
   <header class="main-header" id="main-header">
     <div class="header-container">
       <a href="./index.html" class="logo-link" aria-label="Inicio | Real Racing Club">
@@ -482,10 +495,8 @@
     </div>
   </header>
 
-  <!-- MOBILE MENU OVERLAY -->
   <div class="mobile-menu-overlay" id="mobile-overlay"></div>
 
-  <!-- MOBILE MENU -->
   <nav class="mobile-menu" id="mobile-menu">
     <ul class="mobile-nav-links">
       <li><a href="./index.html">Inicio</a></li>
@@ -503,14 +514,12 @@
   </nav>
 
   <main>
-
-     <div class="page-title-plantilla">
+    <div class="page-title-plantilla">
       <h1>Plantilla 2025/26</h1>
-      <!-- <h2>Datos actualizados en junio de 2025</h2> -->
     </div>
 
     <!-- PORTEROS -->
-<section id="porteros">
+    <section id="porteros">
       <h3>Porteros</h3>
       <div class="player-grid">
         <div class="player-card" data-nationality="Española">
@@ -521,6 +530,20 @@
           <div class="player-info">
             <div class="position">Portero</div>
             <div class="name">Jokin Ezkieta</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Búlgara">
+          <div class="player-number">12</div>
+          <div class="player-ribbon">
+            <span> rescindió su cesión</span>
+          </div>
+          <div class="player-image">
+            <img src="./img/paco.png" alt="Andreev">
+          </div>
+          <div class="player-info">
+            <div class="position">Portero</div>
+            <div class="name">Andreev</div>
           </div>
         </div>
 
@@ -536,6 +559,7 @@
         </div>
       </div>
     </section>
+
     <!-- DEFENSAS -->
     <section id="defensas">
       <h3>Defensas</h3>
@@ -575,6 +599,9 @@
 
         <div class="player-card" data-nationality="Francesa">
           <div class="player-number">17</div>
+          <div class="player-ribbon">
+            <span>Cedido</span>
+          </div>
           <div class="player-image">
             <img src="https://assets.laliga.com/squad/2024/t189/p229605/512x512/p229605_t189_2024_1_003_000.png" alt="Michelin">
           </div>
@@ -735,7 +762,7 @@
       </div>
     </section>
 
-    <!-- DELANTEROS - COMPLETO -->
+    <!-- DELANTEROS -->
     <section id="delanteros">
       <h3>Delanteros</h3>
       <div class="player-grid">
@@ -804,6 +831,34 @@
             <div class="name">Manex Lozano</div>
           </div>
         </div>
+
+        <div class="player-card" data-nationality="Española">
+          <div class="player-number">28</div>
+          <div class="player-ribbon">
+            <span>Cedido </span>
+          </div>
+          <div class="player-image">
+            <img src="./img/yeray.png" alt="Yeray Cabanzón">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Yeray Cabanzón</div>
+          </div>
+        </div>
+
+        <div class="player-card" data-nationality="Española/Ecuatoriana">
+          <div class="player-number">29</div>
+          <div class="player-ribbon">
+            <span>Compra</span>
+          </div>
+          <div class="player-image">
+            <img src="./img/jeremy.png" alt="Jeremy">
+          </div>
+          <div class="player-info">
+            <div class="position">Delantero</div>
+            <div class="name">Jeremy</div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -829,16 +884,18 @@
     document.addEventListener('DOMContentLoaded', () => {
       const body = document.body;
       const hamburgerBtn = document.querySelector('.hamburger-menu');
-      const closeBtn = document.querySelector('.close-menu');
-      const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+      const mobileNavOverlay = document.getElementById('mobile-overlay');
+      const mobileMenu = document.getElementById('mobile-menu');
 
       hamburgerBtn.addEventListener('click', () => {
-        mobileNavOverlay.classList.add('is-open');
-        body.classList.add('mobile-nav-open');
+        mobileMenu.classList.toggle('active');
+        mobileNavOverlay.classList.toggle('active');
+        body.classList.toggle('mobile-nav-open');
       });
 
-      closeBtn.addEventListener('click', () => {
-        mobileNavOverlay.classList.remove('is-open');
+      mobileNavOverlay.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
         body.classList.remove('mobile-nav-open');
       });
 
@@ -852,7 +909,8 @@
         card.addEventListener('click', () => {
           const img = card.querySelector('.player-image img');
           modalImage.src = img ? img.src : '';
-          modalName.textContent = card.querySelector('.name').textContent;
+          const nameNode = card.querySelector('.name').childNodes[0];
+          modalName.textContent = nameNode ? nameNode.textContent.trim() : card.querySelector('.name').textContent.trim();
           modalPosition.textContent = card.querySelector('.position').textContent;
           modalNationality.textContent = card.dataset.nationality || 'Desconocida';
           modal.classList.add('active');
@@ -871,7 +929,5 @@
       });
     });
   </script>
-</body>
-</html>
 </body>
 </html>
