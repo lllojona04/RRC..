@@ -11,9 +11,7 @@
     <!-- Tipografías -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link 
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=Montserrat:wght@400;900&family=Roboto:wght@400;700&display=swap" 
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=Montserrat:wght@400;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -45,6 +43,7 @@
             color: var(--white);
             overflow-x: hidden;
             min-height: 100vh;
+            line-height: 1.6;
         }
         img { max-width: 100%; height: auto; display: block; }
         a { color: inherit; text-decoration: none; cursor: pointer; }
@@ -61,18 +60,15 @@
         .loading-content { text-align: center; z-index: 2; }
         .loading-text {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem; font-weight: 700;
+            font-size: clamp(1.2rem, 3vw, 1.4rem); font-weight: 700;
             color: var(--text-light); letter-spacing: 4px;
         }
         .loading-subtext {
-            font-size: 4rem; font-weight: 900;
-            color: #ffffff; /* BLANCO BRILLANTE */
+            font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900;
+            color: #ffffff;
             letter-spacing: 3px; margin-top: 5px;
-            text-shadow:
-                0 0 15px rgba(0, 134, 82, 1), /* BRILLO VERDE INTENSO */
-                0 0 25px rgba(0, 134, 82, 0.8),
-                2px 2px 8px rgba(0, 0, 0, 1);
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            text-shadow: 0 0 15px rgba(0,134,82,1), 0 0 25px rgba(0,134,82,0.8), 2px 2px 8px rgba(0,0,0,1);
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
         }
         body.loaded #loading-screen { opacity: 0; visibility: hidden; }
 
@@ -92,18 +88,23 @@
         }
         .header-container {
             max-width: 1200px; margin: 0 auto;
-            padding: 15px 30px;
+            padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 30px);
             display: flex; justify-content: space-between; align-items: center;
         }
-        .logo { height: 50px; transition: transform 0.3s; }
+        .logo { height: clamp(40px, 6vw, 50px); transition: transform 0.3s; }
         .logo-link:hover .logo { transform: scale(1.05); }
 
         nav.main-nav { display: flex; align-items: center; }
-        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links { 
+            display: flex; 
+            gap: clamp(20px, 3vw, 40px); 
+            list-style: none; 
+            flex-wrap: wrap; 
+        }
         .nav-links a {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700; text-transform: uppercase;
-            font-size: 0.9rem; position: relative;
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem); position: relative;
             color: var(--white);
             padding: 8px 0;
             transition: all 0.3s;
@@ -115,9 +116,7 @@
             background: var(--accent-yellow);
             transition: width 0.4s;
         }
-        .nav-links a:hover, .nav-links li.active a { 
-            color: var(--accent-yellow); 
-        }
+        .nav-links a:hover, .nav-links li.active a { color: var(--accent-yellow); }
         .nav-links a:hover::after, .nav-links li.active a::after { width: 100%; }
 
         .dropdown { position: relative; }
@@ -130,16 +129,14 @@
             min-width: 220px;
             box-shadow: 0 12px 35px rgba(0,107,63,0.5);
             border: 2px solid var(--border-green);
+            z-index: 50;
         }
-        .dropdown:hover .dropdown-menu {
-            opacity: 1; visibility: visible; top: 100%;
-        }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; top: 100%; }
         .dropdown-menu li { border-bottom: 1px solid var(--border-green); }
         .dropdown-menu li:last-child { border-bottom: none; }
         .dropdown-menu a {
             display: block; padding: 15px 25px;
-            font-size: 0.9rem;
-            color: var(--text-light);
+            font-size: 0.9rem; color: var(--text-light);
         }
         .dropdown-menu a:hover { 
             background: var(--racing-green-light);
@@ -147,180 +144,171 @@
             padding-left: 35px;
         }
 
-        /* --- MOBILE NAV --- */
+        /* --- MENÚ HAMBURGUESA FUNCIONAL --- */
         .hamburger-menu {
             background: none; border: none; color: var(--white);
-            font-size: 1.8rem; cursor: pointer; display: none;
-            padding: 10px;
-            border-radius: 8px;
+            font-size: clamp(1.4rem, 4vw, 1.8rem); cursor: pointer; 
+            padding: 10px; border-radius: 8px;
             transition: all 0.3s;
+            display: none;
         }
         .hamburger-menu:hover {
             background: var(--racing-green-light);
             transform: scale(1.1);
         }
+        .hamburger-menu.active i { color: var(--accent-yellow) !important; }
+
+        /* RESPONSIVE - MÓVIL */
         @media (max-width: 992px) {
-            nav.main-nav { display: none; }
             .hamburger-menu { display: block; }
+            nav.main-nav {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: linear-gradient(180deg, rgba(0,107,63,0.98), rgba(10,74,46,0.98));
+                backdrop-filter: blur(20px);
+                flex-direction: column; justify-content: center; align-items: center;
+                transform: translateX(-100%);
+                transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                visibility: hidden; opacity: 0;
+                z-index: 999;
+                padding: 20px 0;
+            }
+            nav.main-nav.active {
+                transform: translateX(0);
+                visibility: visible; opacity: 1;
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: clamp(15px, 4vw, 25px);
+                text-align: center;
+                width: 90%; max-width: 400px;
+            }
+            .nav-links a {
+                font-size: clamp(1.1rem, 4vw, 1.3rem);
+                padding: 15px 20px;
+                border-radius: 10px;
+                transition: all 0.3s;
+            }
+            .nav-links a:hover {
+                background: rgba(243,202,32,0.2);
+                transform: translateX(10px);
+                width: 100%;
+            }
+            .dropdown { width: 100%; }
+            .dropdown-menu {
+                position: static; opacity: 1; visibility: visible;
+                transform: none; background: rgba(0,0,0,0.3);
+                border-radius: 10px; margin-top: 10px;
+                box-shadow: none; border: 1px solid var(--border-green);
+                max-height: 0; overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            .dropdown.active .dropdown-menu {
+                max-height: 200px;
+            }
+            .dropdown-menu a {
+                font-size: clamp(1rem, 3vw, 1.1rem);
+                padding: 18px 30px;
+            }
         }
 
-        /* --- CARRUSEL --- */
-        .carousel-section {
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .carousel-item {
+        /* --- CARRUSEL PERFECTO --- */
+        .carousel-section { height: 100vh; position: relative; overflow: hidden; }
+        .carousel-item { 
             position: absolute; inset: 0; 
-            opacity: 0;
-            transition: opacity 1.2s ease-in-out;
+            opacity: 0; transition: opacity 1.2s ease-in-out; 
         }
-        .carousel-item.active { 
-            opacity: 1; 
-        }
+        .carousel-item.active { opacity: 1; }
 
-        .carousel-slide {
-            position: relative;
-            width: 100%; 
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .carousel-slide { 
+            position: relative; width: 100%; height: 100vh; 
+            display: flex; align-items: center; justify-content: center; 
+            padding: clamp(20px, 5vw, 40px);
         }
-
-        .bg-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: 1;
+        .bg-image { 
+            position: absolute; inset: 0; 
+            background-size: cover; background-position: center; 
+            background-repeat: no-repeat; z-index: 1; 
         }
 
         .carousel-content {
-            position: relative;
-            z-index: 3;
-            text-align: center;
-            max-width: 700px;
-            padding: 25px 25px;
+            position: relative; z-index: 3; text-align: center;
+            max-width: min(90%, 700px); padding: clamp(20px, 4vw, 25px);
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(15px);
-            border-radius: 20px;
-            border: 2px solid rgba(243, 202, 32, 0.5);
-            box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border-radius: 20px; border: 2px solid rgba(243, 202, 32, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15);
             animation: slideInUp 0.8s ease-out;
         }
-
         @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .carousel-content h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            font-weight: 900;
-            color: var(--white) !important;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            text-shadow: 
-                0 0 8px rgba(255, 255, 255, 0.9),
-                2px 2px 4px rgba(0, 0, 0, 0.9);
+            font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900;
+            color: var(--white) !important; text-transform: uppercase;
+            margin-bottom: clamp(10px, 2vw, 15px);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 2px 2px 4px rgba(0, 0, 0, 0.9);
             line-height: 1.1;
         }
-
         .carousel-content p {
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
-            font-weight: 500;
-            color: var(--white) !important;
-            line-height: 1.5;
-            margin: 0;
+            font-size: clamp(1rem, 2.5vw, 1.3rem); font-weight: 500;
+            color: var(--white) !important; line-height: 1.5; margin: 0;
         }
 
         .carousel-controls {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 25px;
-            z-index: 20;
+            position: absolute; top: 50%; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 0 clamp(15px, 3vw, 25px); z-index: 20;
             pointer-events: none;
         }
         .carousel-btn {
             background: linear-gradient(135deg, var(--racing-green), var(--border-green));
-            color: var(--white);
-            border: none;
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            pointer-events: all;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: var(--white); border: none;
+            width: clamp(50px, 8vw, 65px); height: clamp(50px, 8vw, 65px);
+            border-radius: 50%; font-size: clamp(1.2rem, 3vw, 1.5rem);
+            cursor: pointer; pointer-events: all;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 10px 30px rgba(0,107,63,0.7);
             transition: all 0.4s;
         }
         .carousel-btn:hover {
-            transform: scale(1.2);
-            box-shadow: 0 18px 45px rgba(0,107,63,0.9);
+            transform: scale(1.2); box-shadow: 0 18px 45px rgba(0,107,63,0.9);
         }
 
         .carousel-dots {
-            position: absolute;
-            bottom: 35px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
-            z-index: 20;
+            position: absolute; bottom: clamp(20px, 4vw, 35px);
+            left: 50%; transform: translateX(-50%);
+            display: flex; gap: 12px; z-index: 20;
         }
         .dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.6);
-            cursor: pointer;
-            transition: all 0.3s;
+            width: clamp(12px, 2vw, 14px); height: clamp(12px, 2vw, 14px);
+            border-radius: 50%; background: rgba(255,255,255,0.6);
+            cursor: pointer; transition: all 0.3s;
             border: 2px solid rgba(255,255,255,0.3);
         }
         .dot.active {
-            background: var(--accent-yellow);
-            transform: scale(1.3);
+            background: var(--accent-yellow); transform: scale(1.3);
             box-shadow: 0 0 12px var(--accent-yellow);
         }
 
         /* --- FOOTER VERDE --- */
         footer.main-footer {
             background: linear-gradient(180deg, var(--racing-green-dark), var(--bg-green));
-            padding-top: 80px;
-            border-top: 5px solid var(--racing-green);
+            padding-top: 80px; border-top: 5px solid var(--racing-green);
             color: var(--text-light);
         }
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 50px; padding: 0 30px 60px;
+            gap: clamp(30px, 5vw, 50px); padding: 0 clamp(20px, 4vw, 30px) 60px;
             max-width: 1200px; margin: 0 auto;
         }
         .footer-col h4 {
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase; margin-bottom: 25px;
-            position: relative;
-            color: var(--accent-yellow);
+            position: relative; color: var(--accent-yellow);
         }
         .footer-col h4::after {
             content: ''; position: absolute; bottom: -5px;
@@ -331,31 +319,30 @@
         .footer-col p, .footer-col a { 
             color: var(--text-light); 
             font-family: 'Roboto', sans-serif;
-            transition: color 0.3s;
+            transition: color 0.3s; line-height: 1.7;
         }
         .footer-col a:hover {
-            color: var(--accent-yellow);
-            padding-left: 10px;
+            color: var(--accent-yellow); padding-left: 10px;
         }
         .footer-bottom {
             text-align: center; border-top: 2px solid var(--border-green);
-            font-size: 1rem; color: var(--text-light); 
-            padding: 25px 30px;
+            font-size: clamp(0.9rem, 1.5vw, 1rem); color: var(--text-light); 
+            padding: 25px clamp(20px, 4vw, 30px);
             background: rgba(0,107,63,0.3);
         }
 
         /* --- BOTÓN FLOTANTE VERDE --- */
         #floating-phone-btn {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 70px; height: 70px;
+            position: fixed; bottom: clamp(20px, 3vw, 30px); right: clamp(20px, 3vw, 30px);
+            width: clamp(60px, 9vw, 70px); height: clamp(60px, 9vw, 70px);
             background: linear-gradient(135deg, var(--racing-green), var(--racing-green-light));
-            border-radius: 50%;
-            display: grid; place-items: center;
-            color: var(--white); font-size: 26px;
+            border-radius: 50%; display: grid; place-items: center;
+            color: var(--white); font-size: clamp(20px, 4vw, 26px);
             box-shadow: 0 8px 25px rgba(0,107,63,0.6);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 3px solid var(--border-green);
             z-index: 1000;
+            text-decoration: none;
         }
         #floating-phone-btn:hover { 
             transform: scale(1.15) rotate(5deg);
@@ -363,21 +350,17 @@
             box-shadow: 0 15px 40px rgba(0,107,63,0.8);
         }
 
+        /* TABLET */
         @media (max-width: 768px) {
-            .carousel-content {
-                padding: 20px 20px;
-                max-width: 90%;
-                margin: 0 15px;
-            }
-            .carousel-content h1 {
-                font-size: clamp(1.5rem, 6vw, 2.5rem);
-            }
-            .carousel-content p {
-                font-size: clamp(0.95rem, 4vw, 1.2rem);
-            }
-            .loading-subtext {
-                font-size: 3rem;
-            }
+            .header-container { padding: 12px 20px; }
+            .carousel-content { margin: 0 clamp(15px, 4vw, 25px); }
+            .loading-subtext { letter-spacing: 2px; }
+        }
+
+        /* MÓVIL PEQUEÑO */
+        @media (max-width: 480px) {
+            .carousel-dots { gap: 8px; }
+            .dot { width: 12px; height: 12px; }
         }
     </style>
 </head>
@@ -412,7 +395,7 @@
                     </li>
                 </ul>
             </nav>
-            <button class="hamburger-menu" aria-label="Abrir menú móvil">
+            <button class="hamburger-menu" aria-label="Abrir menú móvil" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -507,21 +490,71 @@
         <i class="fas fa-phone"></i>
     </a>
 
-    <!-- JS CARRUSEL + LOADING 2 SEGUNDOS -->
+    <!-- JS CARRUSEL + LOADING + HAMBURGUESA SIN ERRORES -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Scroll header
+            // SCROLL HEADER
             const header = document.getElementById('main-header');
             window.addEventListener('scroll', () => {
                 header.classList.toggle('scrolled', window.scrollY > 50);
             });
 
-            // RETRASO DEL LOADING: 2 SEGUNDOS
+            // LOADING 2 SEGUNDOS
             setTimeout(() => {
                 document.body.classList.add('loaded');
             }, 2000);
 
-            // CARRUSEL - 5 SEGUNDOS ENTRE SLIDES
+            // HAMBURGUESA FUNCIONAL
+            const hamburger = document.querySelector('.hamburger-menu');
+            const nav = document.querySelector('.main-nav');
+            const dropdowns = document.querySelectorAll('.dropdown');
+
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                nav.classList.toggle('active');
+                hamburger.classList.toggle('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+                hamburger.setAttribute('aria-expanded', nav.classList.contains('active'));
+            });
+
+            // CERRAR MENÚ AL PULSAR ENLACE
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    hamburger.querySelector('i').classList.add('fa-bars');
+                    hamburger.querySelector('i').classList.remove('fa-times');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // DROPDOWN MÓVIL
+            dropdowns.forEach(dropdown => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                toggle.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 992) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropdown.classList.toggle('active');
+                    }
+                });
+            });
+
+            // CERRAR AL HACER CLICK FUERA
+            document.addEventListener('click', (e) => {
+                if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                    nav.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    hamburger.querySelector('i').classList.add('fa-bars');
+                    hamburger.querySelector('i').classList.remove('fa-times');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    dropdowns.forEach(d => d.classList.remove('active'));
+                }
+            });
+
+            // CARRUSEL - 5 SEGUNDOS
             const slides = document.querySelectorAll('.carousel-item');
             const dots = document.querySelectorAll('.dot');
             const prevBtn = document.querySelector('.prev-slide');
@@ -559,7 +592,7 @@
                 clearInterval(autoPlayInterval);
             }
 
-            // EVENTOS
+            // EVENTOS CARRUSEL
             nextBtn.addEventListener('click', () => {
                 stopAutoPlay();
                 nextSlide();
@@ -586,8 +619,19 @@
             carouselSection.addEventListener('mouseenter', stopAutoPlay);
             carouselSection.addEventListener('mouseleave', startAutoPlay);
 
+            // INICIAR
             updateCarousel();
             startAutoPlay();
+
+            // REDIMENSIONAR RESPONSIVO
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 992) {
+                    nav.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    hamburger.querySelector('i').classList.add('fa-bars');
+                    hamburger.querySelector('i').classList.remove('fa-times');
+                }
+            });
         });
     </script>
 </body>
