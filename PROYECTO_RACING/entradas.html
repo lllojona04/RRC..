@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta de Entradas - Real Racing Club</title>
+    
+    <!-- Fuentes y Librerías de iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Icono de la página -->
+    <link rel="icon" type="image/png" href="./img/entradas de futbol.png">
+
+    <style>
+        /* === VARIABLES CSS === */
+        :root {
+            --racing-green: #006B3F;
+            --racing-green-dark: #004d2f;
+            --racing-green-light: #008552;
+            --accent-yellow: #f3ca20;
+            --bg-green: #0a4a2e;
+            --white: #ffffff;
+            --text-light: #e0f0e0;
+            --border-green: #00a65b;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-green) 0%, var(--racing-green-dark) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* === HEADER Y NAVEGACIÓN === */
+        header.main-header {
+            position: fixed; top: 0; width: 100%;
+            background: linear-gradient(180deg, rgba(0,107,63,0.95), rgba(10,74,46,0.95));
+            backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--border-green);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px; margin: 0 auto;
+            padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { height: 50px; transition: transform 0.3s; }
+        .logo-link:hover .logo { transform: scale(1.05); }
+
+        nav.main-nav { display: flex; align-items: center; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700; text-transform: uppercase;
+            font-size: 0.9rem; position: relative;
+            color: var(--white); padding: 8px 0;
+            transition: 0.3s;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px; 
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            background: var(--accent-yellow); transition: width 0.3s;
+        }
+
+        /* MARCADO DE SECCIÓN ACTIVA (ENTRADAS) */
+        .nav-links li.active a { color: var(--accent-yellow); }
+        .nav-links li.active a::after { width: 100%; }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--accent-yellow); }
+
+        /* DROPDOWN */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute; top: 120%; left: 0;
+            background: linear-gradient(145deg, var(--racing-green), var(--racing-green-dark));
+            border-radius: 12px; padding: 15px 0;
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s;
+            min-width: 220px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+            border: 2px solid var(--border-green);
+            z-index: 50;
+            list-style: none; /* SE ELIMINAN LOS PUNTOS AQUÍ */
+        }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; top: 100%; }
+        .dropdown-menu li { list-style: none; } /* REFUERZO PARA MÓVIL */
+        .dropdown-menu a { display: block; padding: 12px 25px; font-size: 0.9rem; text-transform: none; }
+        .dropdown-menu a::after { display: none; }
+        .dropdown-menu a:hover { background: var(--racing-green-light); color: var(--accent-yellow); padding-left: 30px; }
+
+        .hamburger-menu {
+            background: none; border: none; color: var(--white);
+            font-size: 1.8rem; cursor: pointer; display: none;
+            padding: 5px;
+            transition: 0.3s;
+            z-index: 1001;
+        }
+
+        @media (max-width: 992px) {
+            .hamburger-menu { display: block; }
+            nav.main-nav {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 107, 63, 0.98);
+                flex-direction: column; justify-content: center; align-items: center;
+                transform: translateX(-100%); transition: 0.4s;
+                visibility: hidden; opacity: 0; z-index: 999;
+            }
+            nav.main-nav.active { transform: translateX(0); visibility: visible; opacity: 1; }
+            .nav-links { flex-direction: column; gap: 20px; text-align: center; width: 90%; }
+            .nav-links a { font-size: 1.2rem; }
+            
+            .dropdown { width: 100%; }
+            .dropdown-menu {
+                position: static; opacity: 1; visibility: visible;
+                display: none; background: rgba(0,0,0,0.2); border: 1px solid var(--border-green);
+                box-shadow: none; margin: 10px auto; width: 100%;
+            }
+            .dropdown.is-open .dropdown-menu { display: block; }
+        }
+
+        /* --- LOADER --- */
+        #ticket-loader {
+            position: fixed; width: 100%; height: 100%; top:0; left:0; 
+            background: linear-gradient(135deg, var(--racing-green-dark), var(--bg-green));
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+        .loader-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .loading-logo { width: 150px; }
+        .loading-text { color: var(--accent-yellow); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .progress-bar-container { width: 280px; height: 10px; background: rgba(255,255,255,0.2); border-radius: 5px; overflow: hidden; }
+        
+        .progress-bar { 
+            width: 0%; height: 100%; 
+            background: linear-gradient(90deg, var(--racing-green), var(--border-green));
+            transition: width 0.4s; 
+            box-shadow: 0 0 20px var(--racing-green);
+        }
+        
+        #main-content { opacity: 0; display: none; transition: opacity 0.5s ease-in; font-family: 'Montserrat', sans-serif; }
+        
+        /* --- LANDING CONTENT --- */
+        .landing-page {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; min-height: calc(100vh - 81px);
+            padding: 40px 20px;
+            background: linear-gradient(rgba(10,74,46,0.85), rgba(0,107,63,0.9)), 
+                        url('https://s2.sportstatics.com/relevo/www/multimedia/202405/19/media/cortadas/racing-santander-grada-RLcuKUgpNp33IYwYCUXR2YO-1200x648@Relevo.jpg');
+            background-size: cover; background-position: center; text-align: center;
+            gap: 50px;
+        }
+        .landing-header h1 { 
+            font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 900; text-transform: uppercase; 
+            letter-spacing: 3px; margin: 0; color: var(--white);
+            text-shadow: 0 4px 20px rgba(243,202,32,0.4);
+        }
+        .landing-header .subtitle { color: var(--accent-yellow); font-size: 1.4rem; font-weight: 700; }
+        
+        .landing-nav {
+            display: flex; flex-direction: column; gap: 40px;
+            width: 100%; max-width: 1000px;
+        }
+
+        .nav-row { 
+            display: flex; justify-content: center; gap: 40px; 
+            width: 100%; flex-wrap: wrap; 
+        }
+        
+        .nav-box {
+            background: linear-gradient(145deg, rgba(26,92,63,0.9), rgba(0,107,63,0.8));
+            border: 3px solid var(--border-green);
+            min-height: 140px; width: 320px; padding: 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px); display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            border-radius: 20px;
+            position: relative; overflow: hidden;
+            text-decoration: none;
+        }
+
+        .nav-box::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .nav-box:hover::before { left: 100%; }
+
+        .nav-box:hover { 
+            transform: translateY(-10px) scale(1.03); 
+            background: linear-gradient(145deg, var(--racing-green), var(--border-green));
+            box-shadow: 0 25px 50px rgba(0,107,63,0.6);
+            border-color: var(--accent-yellow);
+        }
+
+        .box-title { 
+            font-size: 1.6rem; font-weight: 900; text-transform: uppercase;
+            background: linear-gradient(45deg, var(--white), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .box-subtitle { font-size: 0.85rem; color: var(--text-light); margin-top: 8px; font-weight: 600; }
+
+        .main-footer {
+            background: var(--racing-green-dark);
+            color: var(--text-light); text-align: center;
+            padding: 30px; border-top: 4px solid var(--border-green);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-box { width: 90%; min-height: 120px; }
+            .landing-nav { gap: 25px; }
+            .nav-row { gap: 25px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="./index.html" class="logo-link">
+                <img src="./img/logo.png" alt="Logo Real Racing Club" class="logo">
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-links">
+                    <li><a href="./index.html">Inicio</a></li>
+                    <li><a href="./plantilla.html">Plantilla</a></li>
+                    <li><a href="./historia.html">Historia</a></li>
+                    <li class="active"><a href="./entradas.html">Entradas</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Clubes <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion</a></li>
+                            <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" id="hamburger"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- LOADER -->
+    <div id="ticket-loader">
+        <div class="loader-content">
+            <img src="./img/logo.png" alt="Cargando..." class="loading-logo">
+            <p class="loading-text">Cargando entradas</p>
+            <div class="progress-bar-container"><div class="progress-bar"></div></div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <main id="main-content">
+        <div class="landing-page">
+            <header class="landing-header">
+                <img src="./img/logo.png" alt="Logo" style="width: 100px; margin-bottom: 15px;">
+                <h1>Real Racing Club</h1>
+                <p class="subtitle">Venta oficial de entradas</p>
+            </header>
+            
+            <nav class="landing-nav">
+                <div class="nav-row">
+                    <a href="https://abonados.realracingclub.es/" target="_blank" class="nav-box">
+                        <span class="box-title">Portal de Abonado</span>
+                        <span class="box-subtitle">Gestión de carnets y renovaciones</span>
+                    </a>
+                    <a href="#" class="nav-box">
+                        <span class="box-title">Video 360°</span>
+                        <span class="box-subtitle">Tour Virtual por El Sardinero</span>
+                    </a>
+                </div>
+                <div class="nav-row">
+                    <a href="https://bstadium.es/tours-originales/tour-interactivo-el-sardinero-racing-club-de-santander/" target="_blank" class="nav-box">
+                        <span class="box-title">Tour El Sardinero</span>
+                        <span class="box-subtitle">Experiencia Interactiva Premium</span>
+                    </a>
+                    <a href="https://tienda.realracingclub.es/" target="_blank" class="nav-box">
+                        <span class="box-title">Tienda Oficial</span>
+                        <span class="box-subtitle">Equipación Oficial 25/26</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </main>
+    
+    <footer class="main-footer">
+        <p>© 2025 | Real Racing Club de Santander. Pasión Infinita.</p>
+    </footer>
+
+    <script>
+        // Lógica de navegación con cambio de icono (Hamburgesa / X)
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('main-nav');
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = nav.classList.toggle('active');
+            
+            // Cambia el icono entre fa-bars (hamburgesa) y fa-times (X)
+            const icon = hamburger.querySelector('i');
+            if (isOpen) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Toggle Desplegable Clubes en Móvil
+        dropdowns.forEach(d => {
+            const toggle = d.querySelector('.dropdown-toggle');
+            toggle.addEventListener('click', (e) => {
+                if (window.innerWidth <= 992) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    d.classList.toggle('is-open');
+                }
+            });
+        });
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+                dropdowns.forEach(d => d.classList.remove('is-open'));
+            }
+        });
+
+        // Lógica del Loader
+        window.addEventListener('load', () => {
+            const progressBar = document.querySelector('.progress-bar');
+            const loader = document.getElementById('ticket-loader');
+            const content = document.getElementById('main-content');
+
+            setTimeout(() => { progressBar.style.width = '35%'; }, 200);
+            setTimeout(() => { progressBar.style.width = '75%'; }, 600);
+            setTimeout(() => { 
+                progressBar.style.width = '100%'; 
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 300);
+            }, 1100);
+        });
+    </script>
+</body>
+</html>

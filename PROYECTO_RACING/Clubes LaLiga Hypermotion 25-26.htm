@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubes LaLiga Hypermotion 25/26</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* === VARIABLES CSS === */
+        :root {
+            --racing-green: #006B3F;
+            --racing-green-dark: #004d2f;
+            --racing-green-light: #008552;
+            --accent-yellow: #f3ca20;
+            --border-green: #00a65b;
+            --white: #ffffff;
+            --bg-dark-menu: #063523;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a4a2e 0%, #004d2f 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* === HEADER === */
+        header.main-header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(0, 107, 63, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--border-green);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px; margin: 0 auto;
+            padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { height: 50px; transition: transform 0.3s; }
+
+        nav.main-nav { display: flex; align-items: center; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700; text-transform: uppercase;
+            font-size: 0.9rem; position: relative;
+            color: var(--white); padding: 8px 0;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px; 
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            background: var(--accent-yellow); transition: width 0.3s;
+        }
+        .nav-links a:hover::after, .nav-links li.active > a::after { width: 100%; }
+        .nav-links a:hover, .nav-links li.active > a { color: var(--accent-yellow); }
+
+        /* === DROPDOWN SIN PUNTOS === */
+        .dropdown { position: relative; }
+
+        .dropdown-menu {
+            position: absolute; 
+            top: 100%; 
+            right: 0;
+            background-color: var(--bg-dark-menu);
+            border: 2px solid var(--border-green);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 240px;
+            list-style: none; /* Asegura que no haya viñetas por defecto */
+            opacity: 0; 
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-top: 10px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-menu li {
+            position: relative;
+            padding-left: 10px; /* Reducido ya que no hay puntos */
+            margin-bottom: 15px;
+            list-style: none; /* Refuerzo para quitar puntos */
+        }
+
+        .dropdown-menu li:last-child { margin-bottom: 0; }
+
+        /* SE HA ELIMINADO EL BLOQUE li::before QUE HACÍA EL CÍRCULO */
+
+        .dropdown-menu a {
+            color: var(--white) !important;
+            text-transform: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-block;
+            line-height: 1.2;
+            transition: 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            color: var(--accent-yellow) !important;
+            text-decoration: underline;
+        }
+
+        .fa-chevron-down { font-size: 0.7rem; margin-left: 5px; }
+
+        /* === RESPONSIVE === */
+        .hamburger-menu { background: none; border: none; color: var(--white); font-size: 1.8rem; display: none; cursor: pointer; }
+
+        @media (max-width: 992px) {
+            .hamburger-menu { display: block; }
+            nav.main-nav {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: var(--bg-dark-menu); flex-direction: column; 
+                justify-content: center; transform: translateX(-100%); transition: 0.4s;
+                visibility: hidden;
+            }
+            nav.main-nav.active { transform: translateX(0); visibility: visible; }
+            .nav-links { flex-direction: column; align-items: center; }
+            .dropdown-menu { position: static; opacity: 1; visibility: visible; border: none; box-shadow: none; padding-left: 0; text-align: center; }
+        }
+
+        /* CONTENIDO DE LA PÁGINA */
+        .page-header { text-align: center; padding-top: 120px; margin-bottom: 20px; }
+        .page-header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; text-transform: uppercase; }
+        .page-header p { color: var(--accent-yellow); font-weight: 700; }
+
+        main { flex: 1; display: flex; justify-content: center; padding: 20px; }
+        .main-image { max-width: 1000px; width: 100%; border-radius: 12px; border: 2px solid var(--border-green); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        
+        footer { background: var(--racing-green-dark); padding: 20px; text-align: center; border-top: 3px solid var(--racing-green); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    
+    <header class="main-header">
+        <div class="header-container">
+            <a href="./index.html" class="logo-link">
+                <img src="./img/logo.png" alt="Logo" class="logo">
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-links">
+                    <li><a href="./index.html">Inicio</a></li>
+                    <li><a href="./plantilla.html">Plantilla</a></li>
+                    <li><a href="./historia.html">Historia</a></li>
+                    <li><a href="./entradas.html">Entradas</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle">Clubes <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./Clubes LaLiga Hypermotion 25-26.htm">Clubes LaLiga Hypermotion</a></li>
+                            <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" id="hamburger"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>Clubes LaLiga Hypermotion</h1>
+        <p>Temporada 2025/26</p>
+    </div>
+
+    <main>
+        <img src="./img/equiposs.JPG" alt="Equipos" class="main-image">
+    </main>
+
+    <footer>
+        <p>© 2026 Real Racing Club de Santander | Pasión Infinita</p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('main-nav');
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

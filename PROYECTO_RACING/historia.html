@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia - Real Racing Club</title>
+    
+    <!-- Fuentes (Poppins para el Nav, Montserrat para el contenido) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Librería de Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/logo.png">
+
+    <style>
+        /* === VARIABLES CSS === */
+        :root {
+            --racing-green: #006B3F;
+            --racing-green-dark: #004d2f;
+            --racing-green-light: #008552;
+            --accent-yellow: #f3ca20;
+            --border-green: #00a65b;
+            --white: #ffffff;
+            --bg-green: #0a4a2e;
+            --card-bg: #1a5c3f;
+            --card-border: #00a65b;
+            --text-light: #e0f0e0;
+            --border-color: #004d2f;
+        }
+
+        /* === NAVEGACIÓN === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-green) 0%, var(--racing-green-dark) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header.main-header {
+            position: fixed; top: 0; width: 100%;
+            background: linear-gradient(180deg, rgba(0,107,63,0.95), rgba(10,74,46,0.95));
+            backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--border-green);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px; margin: 0 auto;
+            padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { height: 50px; transition: transform 0.3s; }
+        .logo-link:hover .logo { transform: scale(1.05); }
+
+        nav.main-nav { display: flex; align-items: center; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700; text-transform: uppercase;
+            font-size: 0.9rem; position: relative;
+            color: var(--white); padding: 8px 0;
+            transition: 0.3s;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px; 
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            background: var(--accent-yellow); transition: width 0.3s;
+        }
+
+        /* ESTILO PARA EL LINK ACTIVO (Historia) */
+        .nav-links li.active a {
+            color: var(--accent-yellow);
+        }
+        .nav-links li.active a::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--accent-yellow); }
+
+        /* DROPDOWN */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute; top: 120%; left: 0;
+            background: linear-gradient(145deg, var(--racing-green), var(--racing-green-dark));
+            border-radius: 12px; padding: 15px 0;
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s;
+            min-width: 220px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+            border: 2px solid var(--border-green);
+            z-index: 50;
+            list-style: none; /* SE ELIMINAN LOS PUNTOS AQUÍ */
+        }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; top: 100%; }
+        .dropdown-menu li { list-style: none; } /* REFUERZO */
+        .dropdown-menu a { display: block; padding: 12px 25px; font-size: 0.9rem; text-transform: none; }
+        .dropdown-menu a::after { display: none; }
+        .dropdown-menu a:hover { background: var(--racing-green-light); color: var(--accent-yellow); padding-left: 30px; }
+
+        .hamburger-menu {
+            background: none; border: none; color: var(--white);
+            font-size: 1.8rem; cursor: pointer; display: none;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        @media (max-width: 992px) {
+            .hamburger-menu { display: block; }
+            nav.main-nav {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(0, 107, 63, 0.98);
+                flex-direction: column; justify-content: center; align-items: center;
+                transform: translateX(-100%); transition: 0.4s;
+                visibility: hidden; opacity: 0; z-index: 999;
+            }
+            nav.main-nav.active { transform: translateX(0); visibility: visible; opacity: 1; }
+            .nav-links { flex-direction: column; gap: 20px; text-align: center; width: 90%; }
+            .nav-links a { font-size: 1.2rem; }
+            
+            .dropdown { width: 100%; }
+            .dropdown-menu {
+                position: static; opacity: 1; visibility: visible;
+                display: none; background: rgba(0,0,0,0.2); border: 1px solid var(--border-green);
+                box-shadow: none; margin: 10px auto; width: 100%;
+            }
+            .dropdown.is-open .dropdown-menu { display: block; }
+        }
+
+        /* === ESTILOS DEL CONTENIDO === */
+        .hero-title {
+            position: fixed;
+            top: 81px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(0,107,63,0.95), rgba(10,74,46,0.95));
+            backdrop-filter: blur(20px);
+            border-bottom: 3px solid var(--accent-yellow);
+            z-index: 999;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,107,63,0.4);
+        }
+        .hero-title h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            color: var(--white);
+            margin: 0;
+            text-transform: uppercase;
+        }
+        .hero-title .subtitle {
+            font-size: 1.1rem;
+            color: var(--accent-yellow);
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        main {
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 180px;
+        }
+
+        .page-title-section {
+            height: 45vh; background-size: cover; background-position: center;
+            position: relative;
+        }
+        .page-title-section::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, var(--bg-green) 5%, transparent 95%);
+        }
+
+        .content-section { padding: 40px 0; }
+        .content-box {
+            background: linear-gradient(145deg, var(--card-bg), #1e6a48);
+            padding: 50px; border-radius: 20px;
+            max-width: 1000px; margin: -120px auto 0 auto;
+            position: relative; z-index: 2;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            border: 2px solid var(--card-border);
+        }
+        .content-box h2 {
+            text-align: center; font-size: 2.2rem; font-weight: 900;
+            margin-bottom: 30px; color: var(--accent-yellow);
+        }
+        .content-box p { line-height: 1.8; color: var(--text-light); margin-bottom: 25px; font-size: 1.1rem; }
+        
+        .pillar { margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
+        .pillar:first-of-type { border-top: none; }
+        .pillar h3 { font-size: 1.8rem; color: var(--white); margin-bottom: 20px; }
+        .pillar img { border-radius: 15px; margin-top: 25px; border: 3px solid var(--card-border); }
+
+        .main-footer {
+            background: var(--racing-green-dark);
+            padding: 40px 0; text-align: center; color: var(--text-light); 
+            border-top: 3px solid var(--card-border); margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="main-header">
+        <div class="header-container">
+            <a href="./index.html" class="logo-link">
+                <img src="./img/logo.png" alt="Logo Real Racing Club" class="logo">
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-links">
+                    <li><a href="./index.html">Inicio</a></li>
+                    <li><a href="./plantilla.html">Plantilla</a></li>
+                    <li class="active"><a href="./historia.html">Historia</a></li>
+                    <li><a href="./entradas.html">Entradas</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Clubes <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./Clubes LaLiga Hypermotion 25-26.html">Clubes LaLiga Hypermotion</a></li>
+                            <li><a href="./Pretemporada.html">Partidos Pretemporada</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" id="hamburger"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <div class="hero-title">
+        <h1>Historia del Racing de Santander</h1>
+        <div class="subtitle">Un Siglo de Pasión Verdiblanca</div>
+    </div>
+
+    <main>
+        <section class="page-title-section" style="background-image: url('https://media.gettyimages.com/id/121852445/es/foto/los-campos-de-sport-del-sardinero-home-of-racing-santander.jpg?s=2048x2048&w=gi&k=20&c=N5854lB97x6i4QyWzQ68qVl7u3y-L0hDk4Lq765w3_A=');">
+        </section>
+        
+        <section class="content-section">
+            <div class="container content-box">
+                <h2>Un Recorrido por Nuestra Historia</h2>
+                <p>Fundado en 1913, el Real Racing Club es uno de los clubes históricos del fútbol español. Su trayectoria, símbolos e himno están marcados por épocas doradas, momentos difíciles y una afición inquebrantable.</p>
+                
+                <div class="pillar">
+                    <h3>Fundación y Años Dorados (1913-1936)</h3>
+                    <p>El club nace oficialmente en 1913 y rápidamente se consolida como una de las potencias del norte. En 1928, se convierte en uno de los diez clubes fundadores de la Primera División.</p>
+                </div>
+
+                <div class="pillar">
+                    <h3>Gesta Europea (2007-2008)</h3>
+                    <p>Con figuras legendarias como Pedro Munitis y Žigić, el club vivió grandes noches. El punto álgido llegó en la temporada 2007-08, con una clasificación histórica para la Copa de la UEFA.</p>
+                </div>
+
+                <div class="pillar">
+                    <h3>El Escudo e Identidad</h3>
+                    <p>El escudo contiene la bandera de Santander y un ancla, símbolo de la profunda conexión de la ciudad con el mar Cantábrico. Es un emblema que representa el espíritu marinero de Cantabria.</p>
+                    <img src="https://www.estadiodeportivo.com/imagenes/e69f898c-3302-429d-8c7a-c1a17181d899_530x978.octet-stream" alt="Escudo del Racing">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>© 2026 | Real Racing Club de Santander. Pasión Infinita.</p>
+    </footer>
+
+    <script>
+        // Lógica de navegación con cambio de icono (Hamburgesa / X)
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('main-nav');
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = nav.classList.toggle('active');
+            
+            // Cambia el icono entre fa-bars (hamburgesa) y fa-times (X)
+            const icon = hamburger.querySelector('i');
+            if (isOpen) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Toggle Desplegable Clubes en Móvil
+        dropdowns.forEach(d => {
+            const toggle = d.querySelector('.dropdown-toggle');
+            toggle.addEventListener('click', (e) => {
+                if (window.innerWidth <= 992) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    d.classList.toggle('is-open');
+                }
+            });
+        });
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('active');
+                const icon = hamburger.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+                dropdowns.forEach(d => d.classList.remove('is-open'));
+            }
+        });
+    </script>
+</body>
+</html>
